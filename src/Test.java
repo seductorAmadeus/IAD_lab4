@@ -15,31 +15,48 @@ public class Test implements ItemListener {
     private ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
 
     Test() {
-        JFrame frame = new JFrame("Lab 4");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        JPanel panel1 = new JPanel();
-        panel1.setLayout(new BorderLayout());
+        JFrame mainFrame = new JFrame("Lab 4");
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+
+        JPanel graphPanel = new JPanel();
+        //graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.Y_AXIS));
+        graphPanel.add(graph);
+
+        mainPanel.add(graphPanel, BorderLayout.CENTER);
+       /* JButton button = new JButton("first Button");
+        mainPanel.add(button, BorderLayout.EAST);
+
+        /*JPanel dataPanel = new JPanel();
+        dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.X_AXIS));
+
+        dataPanel.add(new JButton("Test"));
+        mainPanel.add(dataPanel, BorderLayout.WEST);
+         /*
         JPanel panel2 = new JPanel();// панель для разделения области под график и области под данные
-        panel2.setLayout(new GridLayout(1, 2));
         JPanel panel3 = new JPanel(); // панель для разделения графика
-        panel3.setLayout(new GridLayout());
         JPanel panel4 = new JPanel(); // панель для данных
-        panel4.setLayout(new GridLayout(5, 2));
         JPanel panel5 = new JPanel(); // панель для значений y
 
-        panel5.setLayout(new GridLayout(3, Data.X.length / 3));
-        JPanel panel6 = new JPanel(); // панель для кнопки
-        panel6.setLayout(new GridLayout(2, 4));
-
-        panel1.add(panel2, BorderLayout.CENTER);
-        panel2.add(panel3, BorderLayout.CENTER);
-        panel2.add(panel4, BorderLayout.CENTER);
+        panel1.setLayout(new BorderLayout());
+        panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
+        panel3.setLayout(new BoxLayout(panel3, BoxLayout.X_AXIS));
+        panel4.setLayout(new BoxLayout(panel4, BoxLayout.Y_AXIS));
+        panel5.setLayout(new BoxLayout(panel5, BoxLayout.Y_AXIS));
 
         panel3.add(graph);
+
+        panel2.add(panel3);
+        panel2.add(panel4);
+        panel1.add(panel2);
         graph.addMouseListener(new Test.mListener());
-        panel4.add(label1);
-        panel4.add(label2);
+
+     //   panel4.add(label1);
+       // panel4.add(label2);
         panel4.add(new JLabel("Выберите координату х для точки:"));
+
         DefaultListModel listModel = new DefaultListModel();
         for (int i = 0; i < Data.X.length; i++) {
             String data = Double.toString(Data.X[i]);
@@ -62,23 +79,27 @@ public class Test implements ItemListener {
             checkBoxesList.add(jcb);
         }
 
-        panel4.add(new JLabel("Введите значение R:"));
+        panel4.add(new JLabel("Введите значение radius:"));
         EventSpinner();
         panel3.add(graph);
         panel4.add(spinner);
 
-        panel4.add(panel6);
+        //panel4.add(panel6);
         JButton button = new JButton("Отметить точку");
-        panel6.add(button);
+        panel5.add(button);
+        //panel6.add(button);
         ActionListener actionListener = new Test.TestActionListener();
         button.addActionListener(actionListener);
 
-        frame.getContentPane().add(panel1);
-        frame.setPreferredSize(new Dimension(800, 600));
-        frame.setResizable(false);
-        frame.pack();
-        frame.setVisible(true);
-        frame.setLocationRelativeTo(null);
+        mainFrame.getContentPane().add(panel2);
+        //
+        */
+        mainFrame.getContentPane().add(mainPanel);
+        mainFrame.setPreferredSize(new Dimension(800,500));
+        mainFrame.setResizable(false);
+        mainFrame.pack();
+        mainFrame.setVisible(true);
+        mainFrame.setLocationRelativeTo(null);
     }
 
     private void EventSpinner() {
@@ -120,7 +141,7 @@ public class Test implements ItemListener {
     }
 
     private void Paint(Graph graph) {
-        graph.R = radius;
+        graph.radius = radius;
         if (!Graph.flag) {
             Graph.x = (int) xPoint;
             Graph.y = (int) yPoint;

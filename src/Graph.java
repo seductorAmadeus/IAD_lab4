@@ -6,33 +6,33 @@ class Graph extends JPanel implements Runnable {
     static boolean flag;
     static double x, y;
     int green, red;
-    int R = 4;
-    int h = 350;
-    int w = 350;
+    int radius = 4;
+    int h = 100;
+    int w = 100;
     int step;
     private int steppast = 25;
     private int count = 0;
     private int[] xPoints = new int[]{w / 2 - 100, w / 2, w / 2};
-    private int[] yPoints = new int[]{h / 2, h / 2, h / 2 + 100};
+    private int[] yPoints = new int[]{100, 100, 300, 300};
     private Color color = Color.black;
 
     @Override
     protected void paintComponent(Graphics graph) {
         count += 1;
-        step = (int) 100 / R;
+        step = (int) 100 / radius;
         setSize(h, w);
         Graphics2D graphic = (Graphics2D) graph;
         super.paintComponent(graphic);
-        this.setBackground(new Color(0xFF, 253, 136));
+        this.setBackground(new Color(0xFF, 248, 116));
         /**
          * отрисовываем график. Переделать, пусть перерисовывается график, а не масштаб осей координат
          */
         graphic.setColor(color);
-        graphic.fillArc(w / 2 - 50, h / 2 - 50, 100, 100, 0, 90);
-        graphic.fillRect(w / 2, h / 2, 100, 100);
-        graphic.fillPolygon(xPoints, yPoints, 3);
+        graphic.fillArc(radius +121, radius +121, 200, 200, 0, 90); // вычислять через координаты
+        graphic.fillRect(125, 225, 100, 100); // вычислять через координаты
+        graph.fillPolygon(new int[]{125, 115 , 200}, new int[]{225, 350, 119}, 3 );
 
-        graphic.setColor(Color.white);
+        graphic.setColor(new Color(0xFF0045));
         graphic.drawLine(w / 2, h, w / 2, 0);            //оси координат
         graphic.drawLine(w / 2, 0, w / 2 - 4, 10);
         graphic.drawLine(w / 2, 0, w / 2 + 4, 10);
@@ -41,7 +41,7 @@ class Graph extends JPanel implements Runnable {
         graphic.drawLine(w - 10, h / 2 + 4, w, h / 2);
 
         graphic.drawString("0", w / 2 + 2, h / 2 + 14);
-        for (int i = R; i >= 1; i--) {
+        for (int i = radius; i >= 1; i--) {
             graphic.drawLine(w / 2 - i * step, h / 2 - 3, w / 2 - i * step, h / 2 + 3);
             graphic.drawString("-" + i, w / 2 - i * step, h / 2 + 17);
             graphic.drawLine(w / 2 - 3, h / 2 - i * step, w / 2 + 3, h / 2 - i * step);            //цена деления
@@ -61,7 +61,7 @@ class Graph extends JPanel implements Runnable {
             y1 = y;
         }
         boolean fcolor;
-        if ((x1 <= R & x1 >= 0 & ((y1 >= -R & y1 <= 0) || (Math.pow(x1, 2) + Math.pow(y1, 2) <= Math.pow(R, 2) / 4))) || (x1 >= -R & x1 <= 0 & y1 >= -R & y1 <= 0 & x1 >= -R - y1)) {
+        if ((x1 <= radius & x1 >= 0 & ((y1 >= -radius & y1 <= 0) || (Math.pow(x1, 2) + Math.pow(y1, 2) <= Math.pow(radius, 2) / 4))) || (x1 >= -radius & x1 <= 0 & y1 >= -radius & y1 <= 0 & x1 >= -radius - y1)) {
             graphic.setColor(Color.green);
             green = 1;
             if (red == 1) fcolor = true;
