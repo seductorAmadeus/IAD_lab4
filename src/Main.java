@@ -42,6 +42,7 @@ public class Main implements ItemListener {
         // добавляем чекбоксы и график на панель графика
         dataPanel.add(checkBoxPanel);
         dataPanel.add(comboBoxPanel);
+        dataPanel.add(Box.createVerticalStrut(400));
         graphPanel.add(graph);
         // добавляем панели на главную панель
         mainPanel.add(graphPanel, BorderLayout.EAST);
