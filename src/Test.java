@@ -20,68 +20,45 @@ public class Test implements ItemListener {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        JPanel mainGraphPanel = new JPanel(); // панель для панели для графика
-        // напрямую не добавить, иначе панель не раздвинется.
-        mainGraphPanel.setLayout(new BoxLayout(mainGraphPanel, BoxLayout.X_AXIS));
 
         JPanel graphPanel = new JPanel(); // панель для графика
         graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.X_AXIS));
         graphPanel.setPreferredSize(new Dimension(450, 250)); // раздвигаем панель для графика
-        // (раздвигая при этом панель под панель для графика
-        mainGraphPanel.add(graphPanel);
 
-        mainPanel.add(mainGraphPanel, BorderLayout.EAST);
-        graphPanel.add(graph);
-
-        // рамка для отображения панелей
-        Border etched = BorderFactory.createEtchedBorder(new Color(0xFF0045), null);
-        /*выставляем рамки*/
-        mainPanel.setBorder(etched);
-        mainGraphPanel.setBorder(etched);
-        graphPanel.setBorder(etched);
-        /*JCheckBox checkbox = new JCheckBox();
-        JCheckBox checkbox1 = new JCheckBox();
-        graphPanel.add(checkbox);
-        graphPanel.add(checkbox1);
-        // end
-        /*test code
-        JButton button1 = new JButton("12345");
-        JButton button2 = new JButton("98765");
-        mainPanel.add(button1, BorderLayout.EAST);
-        mainPanel.add(button2, BorderLayout.WEST);
-        // end of test code
-        */
-        /* JButton button = new JButton("first Button");
-        mainPanel.add(button, BorderLayout.EAST);
-
-        /*JPanel dataPanel = new JPanel();
+        JPanel dataPanel = new JPanel();
         dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.X_AXIS));
+        dataPanel.setPreferredSize(new Dimension(340, 500)); // раздвигаем панель для данных
 
-        dataPanel.add(new JButton("Test"));
+        graphPanel.add(graph); // добавляем график на панель
+
+        // добавляем панели на главную панель
+        mainPanel.add(graphPanel, BorderLayout.EAST);
         mainPanel.add(dataPanel, BorderLayout.WEST);
-         /*
+        // рамка для отображения панелей
+        Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
+        // выставляем рамки
+        dataPanel.setBorder(etched);
+        mainPanel.setBorder(etched);
+        graphPanel.setBorder(etched);
+        /*
         JPanel panel2 = new JPanel();// панель для разделения области под график и области под данные
         JPanel panel3 = new JPanel(); // панель для разделения графика
         JPanel panel4 = new JPanel(); // панель для данных
         JPanel panel5 = new JPanel(); // панель для значений y
-
         panel1.setLayout(new BorderLayout());
         panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
         panel3.setLayout(new BoxLayout(panel3, BoxLayout.X_AXIS));
         panel4.setLayout(new BoxLayout(panel4, BoxLayout.Y_AXIS));
         panel5.setLayout(new BoxLayout(panel5, BoxLayout.Y_AXIS));
-
         panel3.add(graph);
-
         panel2.add(panel3);
         panel2.add(panel4);
         panel1.add(panel2);
         graph.addMouseListener(new Test.mListener());
-
        //panel4.add(label1);
        //panel4.add(label2);
-        panel4.add(new JLabel("Выберите координату х для точки:"));
 
+        panel4.add(new JLabel("Выберите координату х для точки:"));
         DefaultListModel listModel = new DefaultListModel();
         for (int i = 0; i < Data.X.length; i++) {
             String data = Double.toString(Data.X[i]);
@@ -115,9 +92,7 @@ public class Test implements ItemListener {
         //panel6.add(button);
         ActionListener actionListener = new Test.TestActionListener();
         button.addActionListener(actionListener);
-
         mainFrame.getContentPane().add(panel2);
-        //
         */
         mainFrame.getContentPane().add(mainPanel);
         mainFrame.setPreferredSize(new Dimension(800,600));
