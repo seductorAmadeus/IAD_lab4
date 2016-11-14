@@ -5,16 +5,16 @@ import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class Test implements ItemListener {
+public class Main implements ItemListener {
     private Graph graph = new Graph();
-    private JLabel label1 = new JLabel("x = ");
+    private JLabel labelXData = new JLabel("x = ");
     private JLabel label2 = new JLabel("y = ");
     private int radius = 4;
     private double xPoint;
     private double yPoint;
     private ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
 
-    Test() {
+    Main() {
         JFrame mainFrame = new JFrame("Lab 4");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -27,16 +27,21 @@ public class Test implements ItemListener {
 
         JPanel dataPanel = new JPanel();
         dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
-        dataPanel.setPreferredSize(new Dimension(340, 500)); // раздвигаем панель для данных
+        dataPanel.setPreferredSize(new Dimension(450, 500)); // раздвигаем панель для данных
 
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.X_AXIS));
-        checkBoxPanel.setPreferredSize(new Dimension(300, 100)); // раздвигаем панель для чекбоксов
+        checkBoxPanel.setPreferredSize(new Dimension(400, 100)); // раздвигаем панель для чекбоксов
 
-        addCheckBoxOnPanel(checkBoxPanel); // добавляем чекбоксы на панель
+        JPanel comboBoxPanel = new JPanel();
+        comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.X_AXIS));
+        comboBoxPanel.setPreferredSize(new Dimension(200, 100)); // раздвигаем панель для чекбоксов
 
+        addXCoordinateOnPanel(checkBoxPanel); // добавляем чекбоксы на панель
+        comboBoxPanel.add(addYCoordinateOnPanel());
         // добавляем чекбоксы и график на панель графика
-        graphPanel.add(checkBoxPanel);
+        dataPanel.add(checkBoxPanel);
+        dataPanel.add(comboBoxPanel);
         graphPanel.add(graph);
         // добавляем панели на главную панель
         mainPanel.add(graphPanel, BorderLayout.EAST);
@@ -44,6 +49,7 @@ public class Test implements ItemListener {
         // рамка для отображения панелей
         Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
         // выставляем рамки
+        comboBoxPanel.setBorder(etched);
         checkBoxPanel.setBorder(etched);
         dataPanel.setBorder(etched);
         mainPanel.setBorder(etched);
@@ -53,25 +59,18 @@ public class Test implements ItemListener {
         JPanel panel3 = new JPanel(); // панель для разделения графика
         JPanel panel4 = new JPanel(); // панель для данных
         JPanel panel5 = new JPanel(); // панель для значений y
-        panel1.setLayout(new BorderLayout());
-        panel2.setLayout(new BoxLayout(panel2, BoxLayout.X_AXIS));
-        panel3.setLayout(new BoxLayout(panel3, BoxLayout.X_AXIS));
-        panel4.setLayout(new BoxLayout(panel4, BoxLayout.Y_AXIS));
-        panel5.setLayout(new BoxLayout(panel5, BoxLayout.Y_AXIS));
+        
         panel3.add(graph);
         panel2.add(panel3);
         panel2.add(panel4);
         panel1.add(panel2);
-        graph.addMouseListener(new Test.mListener());
-       //panel4.add(label1);
+        graph.addMouseListener(new Main.mListener());
+       //panel4.add(labelXData);
        //panel4.add(label2);
 
         panel4.add(new JLabel("Выберите координату х для точки:"));
         DefaultListModel listModel = new DefaultListModel();
-        for (int i = 0; i < Data.X.length; i++) {
-            String data = Double.toString(Data.X[i]);
-            listModel.addElement(data);
-        }
+
 
         final JList list = new JList(listModel);
         list.setSelectedIndex(0);
@@ -92,27 +91,35 @@ public class Test implements ItemListener {
         JButton button = new JButton("Отметить точку");
         panel5.add(button);
         //panel6.add(button);
-        ActionListener actionListener = new Test.TestActionListener();
+        ActionListener actionListener = new Main.TestActionListener();
         button.addActionListener(actionListener);
         mainFrame.getContentPane().add(panel2);
         */
         mainFrame.getContentPane().add(mainPanel);
-        mainFrame.setPreferredSize(new Dimension(800, 700));
+        mainFrame.setPreferredSize(new Dimension(900, 480));
         mainFrame.setResizable(false);
         mainFrame.pack();
         mainFrame.setVisible(true);
         mainFrame.setLocationRelativeTo(null);
     }
 
-    private void addCheckBoxOnPanel(JPanel checkBoxPanel) {
+    private JComboBox addYCoordinateOnPanel() {
+        String[] dataCoordinates = new String[Data.X.length];
+        for (int i = 0; i < Data.X.length; i++) {
+            dataCoordinates[i] = Double.toString(Data.X[i]);
+        }
+        return new JComboBox(dataCoordinates);
+    }
+
+    private void addXCoordinateOnPanel(JPanel checkBoxPanel) {
         // добавляем на панель чекбоксы
-        for (int i = 0; i < Data.Y.length + 2; i++) {
+        for (int i = 0; i < Data.Y.length; i++) {
             String checkBoxName;
             JCheckBox checkBox;
             if (i < Data.Y.length) {
                 checkBoxName = Double.toString(Data.Y[i]);
                 checkBox = new JCheckBox(checkBoxName);
-                checkBoxPanel.add(checkBox);
+                checkBoxPanel.add(checkBox, BoxLayout.X_AXIS);
             } else {
                 checkBoxName = "";
                 checkBox = new JCheckBox(checkBoxName);
@@ -183,7 +190,7 @@ public class Test implements ItemListener {
             g.repaint();
             String pattern = "##0.0";
             DecimalFormat decimalFormat = new DecimalFormat(pattern);
-            label1.setText("x = " + decimalFormat.format((g.getXCoordinate() - g.w / 2) / g.step));
+            labelXData.setText("x = " + decimalFormat.format((g.getXCoordinate() - g.w / 2) / g.step));
             label2.setText("y = " + decimalFormat.format(-(g.getYCoordinate() - g.h / 2) / g.step));
         }
 
