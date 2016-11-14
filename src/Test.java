@@ -95,7 +95,7 @@ public class Test implements ItemListener {
         mainFrame.getContentPane().add(panel2);
         */
         mainFrame.getContentPane().add(mainPanel);
-        mainFrame.setPreferredSize(new Dimension(800,600));
+        mainFrame.setPreferredSize(new Dimension(800,480));
         mainFrame.setResizable(false);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -142,9 +142,9 @@ public class Test implements ItemListener {
 
     private void Paint(Graph graph) {
         graph.radius = radius;
-        if (!Graph.flag) {
-            Graph.x = (int) xPoint;
-            Graph.y = (int) yPoint;
+        if (!Graph.getFlag()) {
+            Graph.setX((int) xPoint);
+            Graph.setY((int) yPoint);
         }
         graph.repaint();
     }
@@ -155,15 +155,14 @@ public class Test implements ItemListener {
             Graph g = (Graph) e.getSource();
             g.red = 0;
             g.green = 0;
-            g.x = e.getX();
-            g.y = e.getY();
-            Graph.flag = true;
+            Graph.setX(e.getX());
+            Graph.setY(e.getY());
+            Graph.setFlag(true);
             g.repaint();
             String pattern = "##0.0";
             DecimalFormat decimalFormat = new DecimalFormat(pattern);
-            label1.setText("x = " + decimalFormat.format((g.x - g.w / 2) / g.step));
-            label2.setText("y = " + decimalFormat.format(-(g.y - g.h / 2) / g.step));
-
+            label1.setText("x = " + decimalFormat.format((g.getXCoordinate() - g.w / 2) / g.step));
+            label2.setText("y = " + decimalFormat.format(-(g.getYCoordinate() - g.h / 2) / g.step));
         }
 
         @Override
@@ -186,7 +185,7 @@ public class Test implements ItemListener {
     private class TestActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Graph.flag = false;
+            Graph.setFlag(false);
             Paint(graph);
         }
     }

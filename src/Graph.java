@@ -3,8 +3,8 @@ import java.awt.*;
 
 class Graph extends JPanel implements Runnable {
     /* доработать поля до private-ов!!!*/
-    static boolean flag;
-    static double x, y;
+    private static boolean flag;
+    private static double x, y;
     int green, red;
     int radius = 4;
     int h = 450;
@@ -15,6 +15,29 @@ class Graph extends JPanel implements Runnable {
     private int[] xPoints = new int[]{w / 2 - 100, w / 2, w / 2};
     private int[] yPoints = new int[]{100, 100, 300, 300};
     private Color color = Color.black;
+
+    public  double getXCoordinate() {
+        return x;
+    }
+
+    public  double getYCoordinate() {
+        return y;
+    }
+
+    public static boolean getFlag() {
+        return flag;
+    }
+
+    public static void setX(double x){
+        Graph.x = x;
+    }
+    public static void setY(double y){
+       Graph.y = y;
+    }
+
+    public static void setFlag(boolean flag){
+        Graph.flag = flag;
+    }
 
     @Override
     protected void paintComponent(Graphics graph) {
@@ -74,12 +97,12 @@ class Graph extends JPanel implements Runnable {
             else fcolor = false;
             green = 0;
         }
-        if (fcolor == true) {
+        if (fcolor) {
             begin();
         }
         double x2;
         double y2;
-        if (flag == true) {
+        if (flag) {
             x2 = x1 * step + w / 2;
             y2 = -y1 * step + h / 2;
             x = x2;
@@ -131,7 +154,7 @@ class Graph extends JPanel implements Runnable {
         }
     }
 
-    public void begin() {
+    private void begin() {
         new Thread(this).start();
     }
 }
