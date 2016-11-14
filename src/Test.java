@@ -1,4 +1,5 @@
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
@@ -8,7 +9,6 @@ public class Test implements ItemListener {
     private Graph graph = new Graph();
     private JLabel label1 = new JLabel("x = ");
     private JLabel label2 = new JLabel("y = ");
-    private JSpinner spinner;
     private int radius = 4;
     private double xPoint;
     private double yPoint;
@@ -20,13 +20,38 @@ public class Test implements ItemListener {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
+        JPanel mainGraphPanel = new JPanel(); // панель для панели для графика
+        // напрямую не добавить, иначе панель не раздвинется.
+        mainGraphPanel.setLayout(new BoxLayout(mainGraphPanel, BoxLayout.X_AXIS));
 
-        JPanel graphPanel = new JPanel();
-        //graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.Y_AXIS));
+        JPanel graphPanel = new JPanel(); // панель для графика
+        graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.X_AXIS));
+        graphPanel.setPreferredSize(new Dimension(450, 250)); // раздвигаем панель для графика
+        // (раздвигая при этом панель под панель для графика
+        mainGraphPanel.add(graphPanel);
+
+        mainPanel.add(mainGraphPanel, BorderLayout.EAST);
         graphPanel.add(graph);
 
-        mainPanel.add(graphPanel, BorderLayout.CENTER);
-       /* JButton button = new JButton("first Button");
+        // рамка для отображения панелей
+        Border etched = BorderFactory.createEtchedBorder(new Color(0xFF0045), null);
+        /*выставляем рамки*/
+        mainPanel.setBorder(etched);
+        mainGraphPanel.setBorder(etched);
+        graphPanel.setBorder(etched);
+        /*JCheckBox checkbox = new JCheckBox();
+        JCheckBox checkbox1 = new JCheckBox();
+        graphPanel.add(checkbox);
+        graphPanel.add(checkbox1);
+        // end
+        /*test code
+        JButton button1 = new JButton("12345");
+        JButton button2 = new JButton("98765");
+        mainPanel.add(button1, BorderLayout.EAST);
+        mainPanel.add(button2, BorderLayout.WEST);
+        // end of test code
+        */
+        /* JButton button = new JButton("first Button");
         mainPanel.add(button, BorderLayout.EAST);
 
         /*JPanel dataPanel = new JPanel();
@@ -53,8 +78,8 @@ public class Test implements ItemListener {
         panel1.add(panel2);
         graph.addMouseListener(new Test.mListener());
 
-     //   panel4.add(label1);
-       // panel4.add(label2);
+       //panel4.add(label1);
+       //panel4.add(label2);
         panel4.add(new JLabel("Выберите координату х для точки:"));
 
         DefaultListModel listModel = new DefaultListModel();
@@ -95,7 +120,7 @@ public class Test implements ItemListener {
         //
         */
         mainFrame.getContentPane().add(mainPanel);
-        mainFrame.setPreferredSize(new Dimension(800,500));
+        mainFrame.setPreferredSize(new Dimension(800,600));
         mainFrame.setResizable(false);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -104,7 +129,7 @@ public class Test implements ItemListener {
 
     private void EventSpinner() {
         SpinnerModel spinnerModel = new SpinnerNumberModel(4, 1, 10, 1);
-        spinner = new JSpinner(spinnerModel);
+        JSpinner spinner = new JSpinner(spinnerModel);
         spinner.addChangeListener(e -> {
             radius = (int) ((JSpinner) e.getSource()).getValue();
             Paint(graph);

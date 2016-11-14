@@ -7,8 +7,8 @@ class Graph extends JPanel implements Runnable {
     static double x, y;
     int green, red;
     int radius = 4;
-    int h = 100;
-    int w = 100;
+    int h = 450;
+    int w = 450;
     int step;
     private int steppast = 25;
     private int count = 0;
