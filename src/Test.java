@@ -22,21 +22,29 @@ public class Test implements ItemListener {
         mainPanel.setLayout(new BorderLayout());
 
         JPanel graphPanel = new JPanel(); // панель для графика
-        graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.X_AXIS));
+        graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.Y_AXIS));
         graphPanel.setPreferredSize(new Dimension(450, 250)); // раздвигаем панель для графика
 
         JPanel dataPanel = new JPanel();
-        dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.X_AXIS));
+        dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
         dataPanel.setPreferredSize(new Dimension(340, 500)); // раздвигаем панель для данных
 
-        graphPanel.add(graph); // добавляем график на панель
+        JPanel checkBoxPanel = new JPanel();
+        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.X_AXIS));
+        checkBoxPanel.setPreferredSize(new Dimension(300, 100)); // раздвигаем панель для чекбоксов
 
+        addCheckBoxOnPanel(checkBoxPanel); // добавляем чекбоксы на панель
+
+        // добавляем чекбоксы и график на панель графика
+        graphPanel.add(checkBoxPanel);
+        graphPanel.add(graph);
         // добавляем панели на главную панель
         mainPanel.add(graphPanel, BorderLayout.EAST);
         mainPanel.add(dataPanel, BorderLayout.WEST);
         // рамка для отображения панелей
         Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
         // выставляем рамки
+        checkBoxPanel.setBorder(etched);
         dataPanel.setBorder(etched);
         mainPanel.setBorder(etched);
         graphPanel.setBorder(etched);
@@ -73,13 +81,7 @@ public class Test implements ItemListener {
 
         panel4.add(new JLabel("Выберите координату y для точки:"));
         panel4.add(panel5, BorderLayout.CENTER);
-        for (int i = 0; i < Data.Y.length; i++) {
-            String data = Double.toString(Data.Y[i]);
-            JCheckBox jcb = new JCheckBox(data);
-            panel5.add(jcb);
-            jcb.addItemListener(this);
-            checkBoxesList.add(jcb);
-        }
+
 
         panel4.add(new JLabel("Введите значение radius:"));
         EventSpinner();
@@ -95,11 +97,31 @@ public class Test implements ItemListener {
         mainFrame.getContentPane().add(panel2);
         */
         mainFrame.getContentPane().add(mainPanel);
-        mainFrame.setPreferredSize(new Dimension(800,480));
+        mainFrame.setPreferredSize(new Dimension(800, 700));
         mainFrame.setResizable(false);
         mainFrame.pack();
         mainFrame.setVisible(true);
         mainFrame.setLocationRelativeTo(null);
+    }
+
+    private void addCheckBoxOnPanel(JPanel checkBoxPanel) {
+        // добавляем на панель чекбоксы
+        for (int i = 0; i < Data.Y.length + 2; i++) {
+            String checkBoxName;
+            JCheckBox checkBox;
+            if (i < Data.Y.length) {
+                checkBoxName = Double.toString(Data.Y[i]);
+                checkBox = new JCheckBox(checkBoxName);
+                checkBoxPanel.add(checkBox);
+            } else {
+                checkBoxName = "";
+                checkBox = new JCheckBox(checkBoxName);
+                checkBox.setVisible(true); // изменить алгоритм!!
+                checkBoxPanel.add(checkBox);
+            }
+            checkBox.addItemListener(this);
+            checkBoxesList.add(checkBox);
+        }
     }
 
     private void EventSpinner() {
