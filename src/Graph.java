@@ -4,43 +4,68 @@ import java.awt.*;
 public class Graph extends JPanel implements Runnable {
     private static boolean flag;
     private static double x, y;
-    int green, red;
-    int radius = 4;
-    int h = 450;
-    int w = 450;
-    int step;
+    private final int graphHeight = 450;
+    private final int graphWidth = 450;
+    private static int radius = 4;
+    private int step;
+    private int green, red;
     private int steppast = 25;
     private int count = 0;
     private Color color = Color.black;
-
-    public  double getXCoordinate() {
-        return x;
-    }
-
-    public  double getYCoordinate() {
-        return y;
-    }
 
     public static boolean getFlag() {
         return flag;
     }
 
-    public static void setX(double x){
-        Graph.x = x;
-    }
-    public static void setY(double y){
-       Graph.y = y;
+    public static void setRadius(int r) {
+        radius = r;
     }
 
-    public static void setFlag(boolean flag){
+    public static void setFlag(boolean flag) {
         Graph.flag = flag;
+    }
+
+    public static void setX(double x) {
+        Graph.x = x;
+    }
+
+    public static void setY(double y) {
+        Graph.y = y;
+    }
+
+    public int getGraphHeight() {
+        return graphHeight;
+    }
+
+    public int getGraphWidth() {
+        return graphWidth;
+    }
+
+    public int getStep() {
+        return step;
+    }
+
+    public void setGreen(int green) {
+        this.green = green;
+    }
+
+    public void setRed(int red) {
+        this.red = red;
+    }
+
+    public double getXCoordinate() {
+        return x;
+    }
+
+    public double getYCoordinate() {
+        return y;
     }
 
     @Override
     protected void paintComponent(Graphics graph) {
         count += 1;
-        step = (int) 100 / radius;
-        setSize(h, w);
+        step = 100 / radius;
+        setSize(graphWidth, graphHeight);
         Graphics2D graphic = (Graphics2D) graph;
         super.paintComponent(graphic);
         this.setBackground(new Color(0xFF, 248, 116));
@@ -48,34 +73,34 @@ public class Graph extends JPanel implements Runnable {
          * отрисовываем график. Переделать, пусть перерисовывается график, а не масштаб осей координат
          */
         graphic.setColor(color);
-        graphic.fillArc(radius +121, radius +121, 200, 200, 0, 90); // вычислять через координаты
+        graphic.fillArc(radius + 121, radius + 121, 200, 200, 0, 90); // вычислять через координаты
         graphic.fillRect(125, 225, 100, 100); // вычислять через координаты
-        graph.fillPolygon(new int[]{175, 225 , 225}, new int[]{225, 225, 175}, 3 );
+        graph.fillPolygon(new int[]{175, 225, 225}, new int[]{225, 225, 175}, 3);
 
         graphic.setColor(new Color(0xFF0045));
-        graphic.drawLine(w / 2, h, w / 2, 0);            //оси координат
-        graphic.drawLine(w / 2, 0, w / 2 - 4, 10);
-        graphic.drawLine(w / 2, 0, w / 2 + 4, 10);
-        graphic.drawLine(0, h / 2, w, h / 2);
-        graphic.drawLine(w - 10, h / 2 - 4, w, h / 2);
-        graphic.drawLine(w - 10, h / 2 + 4, w, h / 2);
+        graphic.drawLine(graphWidth / 2, graphHeight, graphWidth / 2, 0);            //оси координат
+        graphic.drawLine(graphWidth / 2, 0, graphWidth / 2 - 4, 10);
+        graphic.drawLine(graphWidth / 2, 0, graphWidth / 2 + 4, 10);
+        graphic.drawLine(0, graphHeight / 2, graphWidth, graphHeight / 2);
+        graphic.drawLine(graphWidth - 10, graphHeight / 2 - 4, graphWidth, graphHeight / 2);
+        graphic.drawLine(graphWidth - 10, graphHeight / 2 + 4, graphWidth, graphHeight / 2);
 
-        graphic.drawString("0", w / 2 + 2, h / 2 + 14);
+        graphic.drawString("0", graphWidth / 2 + 2, graphHeight / 2 + 14);
         for (int i = radius; i >= 1; i--) {
-            graphic.drawLine(w / 2 - i * step, h / 2 - 3, w / 2 - i * step, h / 2 + 3);
-            graphic.drawString("-" + i, w / 2 - i * step, h / 2 + 17);
-            graphic.drawLine(w / 2 - 3, h / 2 - i * step, w / 2 + 3, h / 2 - i * step);            //цена деления
-            graphic.drawString("" + i, w / 2 + 17, h / 2 - i * step + 5);
-            graphic.drawLine(w - (w / 2 - i * step), h / 2 - 3, w - (w / 2 - i * step), h / 2 + 3);            //цена деления
-            graphic.drawString("" + i, w - (w / 2 - i * step + 5), h / 2 + 17);
-            graphic.drawLine(w / 2 - 3, h - (h / 2 - step * i), w / 2 + 3, h - (h / 2 - i * step));            //цена деления
-            graphic.drawString("-" + i, w / 2 + 17, h - (h / 2 - i * step - 5));
+            graphic.drawLine(graphWidth / 2 - i * step, graphHeight / 2 - 3, graphWidth / 2 - i * step, graphHeight / 2 + 3);
+            graphic.drawString("-" + i, graphWidth / 2 - i * step, graphHeight / 2 + 17);
+            graphic.drawLine(graphWidth / 2 - 3, graphHeight / 2 - i * step, graphWidth / 2 + 3, graphHeight / 2 - i * step);            //цена деления
+            graphic.drawString("" + i, graphWidth / 2 + 17, graphHeight / 2 - i * step + 5);
+            graphic.drawLine(graphWidth - (graphWidth / 2 - i * step), graphHeight / 2 - 3, graphWidth - (graphWidth / 2 - i * step), graphHeight / 2 + 3);            //цена деления
+            graphic.drawString("" + i, graphWidth - (graphWidth / 2 - i * step + 5), graphHeight / 2 + 17);
+            graphic.drawLine(graphWidth / 2 - 3, graphHeight - (graphHeight / 2 - step * i), graphWidth / 2 + 3, graphHeight - (graphHeight / 2 - i * step));            //цена деления
+            graphic.drawString("-" + i, graphWidth / 2 + 17, graphHeight - (graphHeight / 2 - i * step - 5));
         }
         double x1;
         double y1;
         if (flag) {
-            x1 = (x - w / 2) / steppast;
-            y1 = (-y + h / 2) / steppast;
+            x1 = (x - graphWidth / 2) / steppast;
+            y1 = (-y + graphHeight / 2) / steppast;
         } else {
             x1 = x;
             y1 = y;
@@ -100,13 +125,13 @@ public class Graph extends JPanel implements Runnable {
         double x2;
         double y2;
         if (flag) {
-            x2 = x1 * step + w / 2;
-            y2 = -y1 * step + h / 2;
+            x2 = x1 * step + graphWidth / 2;
+            y2 = -y1 * step + graphHeight / 2;
             x = x2;
             y = y2;
         } else {
-            x2 = w / 2 + x * step;
-            y2 = h / 2 - y * step;
+            x2 = graphWidth / 2 + x * step;
+            y2 = (graphHeight / 2) - y * step;
         }
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);

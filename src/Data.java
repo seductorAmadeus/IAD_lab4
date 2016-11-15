@@ -11,6 +11,6 @@ public class Data {
     }
 
     public static int getCountOfCoordinates() {
-        return X.length;
+        return (X.length == Y.length) ? X.length : ((X.length > Y.length) ? Y.length : X.length);
     }
 }

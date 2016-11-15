@@ -9,8 +9,6 @@ public class MainFrame implements ItemListener {
     private Graph graph = new Graph();
     private JLabel labelXData = new JLabel("x = ");
     private JLabel labelYData = new JLabel("y = ");
-    private int radius = 4;
-    private double xPoint;
     private double yPoint;
     private ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
     private JSpinner spinner;
@@ -62,7 +60,6 @@ public class MainFrame implements ItemListener {
         dataPanel.add(labelXData);
         dataPanel.add(labelYData);
         // добавляем кнопку на панель данных
-        String string = "Отметить точку";
         Font font = new Font("Arial", Font.CENTER_BASELINE, 15);
         JButton button = new JButton("Отметить точку");
         button.setFont(font);
@@ -79,7 +76,7 @@ public class MainFrame implements ItemListener {
         // добавляем панели на главную панель
         mainPanel.add(graphPanel, BorderLayout.EAST);
         mainPanel.add(dataPanel, BorderLayout.WEST);
-        // рамка для отображения панелей
+     /*   // рамка для отображения панелей
         Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
         // выставляем рамки
         labelChoiceX.setBorder(etched);
@@ -88,6 +85,14 @@ public class MainFrame implements ItemListener {
         dataPanel.setBorder(etched);
         mainPanel.setBorder(etched);
         graphPanel.setBorder(etched);
+     */
+        // Добавляем меню.
+        JMenu jMenu = new JMenu("About");
+        JMenuItem menuItemAbout = new JMenuItem("Author");
+        jMenu.add(menuItemAbout);
+        JMenuBar jMenuBar = new JMenuBar();
+        jMenuBar.add(jMenu);
+        mainFrame.setJMenuBar(jMenuBar);
         // добавляем главную панель на окно
         mainFrame.getContentPane().add(mainPanel);
         mainFrame.setPreferredSize(new Dimension(710, 480));
@@ -109,16 +114,9 @@ public class MainFrame implements ItemListener {
         for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
             String checkBoxName;
             JCheckBox checkBox;
-            if (i < Data.getCountOfCoordinates()) {
-                checkBoxName = Double.toString(Data.getY(i));
-                checkBox = new JCheckBox(checkBoxName);
-                checkBoxPanel.add(checkBox);
-            } else {
-                checkBoxName = "";
-                checkBox = new JCheckBox(checkBoxName);
-                checkBox.setVisible(true); // изменить алгоритм!!
-                checkBoxPanel.add(checkBox);
-            }
+            checkBoxName = Double.toString(Data.getY(i));
+            checkBox = new JCheckBox(checkBoxName);
+            checkBoxPanel.add(checkBox);
             checkBox.addItemListener(this);
             checkBoxesList.add(checkBox);
         }
@@ -131,14 +129,14 @@ public class MainFrame implements ItemListener {
         JTextField tempTextField = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
         tempTextField.setEditable(false);
         spinner.addChangeListener(e -> {
-            radius = (int) ((JSpinner) e.getSource()).getValue();
+            Graph.setRadius((int) ((JSpinner) e.getSource()).getValue());
             Paint(graph);
         });
     }
 
     @Override
-    public void itemStateChanged(ItemEvent ie) {
-        JCheckBox cb = (JCheckBox) ie.getItem();
+    public void itemStateChanged(ItemEvent itemEvent) {
+        JCheckBox cb = (JCheckBox) itemEvent.getItem();
         if (cb.isSelected())
             yPoint = Double.parseDouble(cb.getText());
         for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
@@ -152,9 +150,7 @@ public class MainFrame implements ItemListener {
     }
 
     private void Paint(Graph graph) {
-        graph.radius = radius;
         if (!Graph.getFlag()) {
-            Graph.setX((int) xPoint);
             Graph.setY((int) yPoint);
         }
         graph.repaint();
@@ -162,40 +158,40 @@ public class MainFrame implements ItemListener {
 
     private class mListener implements MouseListener {
         @Override
-        public void mouseClicked(MouseEvent e) {
-            Graph g = (Graph) e.getSource();
-            g.red = 0;
-            g.green = 0;
-            Graph.setX(e.getX());
-            Graph.setY(e.getY());
+        public void mouseClicked(MouseEvent mouseEvent) {
+            Graph graph = (Graph) mouseEvent.getSource();
+            graph.setRed(0);
+            graph.setGreen(0);
+            Graph.setX(mouseEvent.getX());
+            Graph.setY(mouseEvent.getY());
             Graph.setFlag(true);
-            g.repaint();
+            graph.repaint();
             String pattern = "##0.0";
             DecimalFormat decimalFormat = new DecimalFormat(pattern);
-            labelXData.setText("x = " + decimalFormat.format((g.getXCoordinate() - g.w / 2) / g.step));
-            labelYData.setText("y = " + decimalFormat.format(-(g.getYCoordinate() - g.h / 2) / g.step));
+            labelXData.setText("x = " + decimalFormat.format((graph.getXCoordinate() - graph.getGraphWidth() / 2) / graph.getStep()));
+            labelYData.setText("y = " + decimalFormat.format(-(graph.getYCoordinate() - graph.getGraphHeight() / 2) / graph.getStep()));
         }
 
         @Override
-        public void mouseEntered(MouseEvent e) {
+        public void mouseEntered(MouseEvent mouseEvent) {
         }
 
         @Override
-        public void mouseExited(MouseEvent e) {
+        public void mouseExited(MouseEvent mouseEvent) {
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
+        public void mouseReleased(MouseEvent mouseEvent) {
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mousePressed(MouseEvent mouseEvent) {
         }
     }
 
     private class TestActionListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e) {
+        public void actionPerformed(ActionEvent actionEvent) {
             Graph.setFlag(false);
             Paint(graph);
         }
