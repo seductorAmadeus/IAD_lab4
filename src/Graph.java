@@ -1,8 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-class Graph extends JPanel implements Runnable {
-    /* доработать поля до private-ов!!!*/
+public class Graph extends JPanel implements Runnable {
     private static boolean flag;
     private static double x, y;
     int green, red;
@@ -12,8 +11,6 @@ class Graph extends JPanel implements Runnable {
     int step;
     private int steppast = 25;
     private int count = 0;
-    private int[] xPoints = new int[]{w / 2 - 100, w / 2, w / 2};
-    private int[] yPoints = new int[]{100, 100, 300, 300};
     private Color color = Color.black;
 
     public  double getXCoordinate() {
@@ -53,7 +50,7 @@ class Graph extends JPanel implements Runnable {
         graphic.setColor(color);
         graphic.fillArc(radius +121, radius +121, 200, 200, 0, 90); // вычислять через координаты
         graphic.fillRect(125, 225, 100, 100); // вычислять через координаты
-        graph.fillPolygon(new int[]{125, 115 , 200}, new int[]{225, 350, 119}, 3 );
+        graph.fillPolygon(new int[]{175, 225 , 225}, new int[]{225, 225, 175}, 3 );
 
         graphic.setColor(new Color(0xFF0045));
         graphic.drawLine(w / 2, h, w / 2, 0);            //оси координат

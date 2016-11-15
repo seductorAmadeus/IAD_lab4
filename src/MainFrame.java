@@ -28,7 +28,7 @@ public class MainFrame implements ItemListener {
 
         JPanel dataPanel = new JPanel();
         dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
-        dataPanel.setPreferredSize(new Dimension(300, 500)); // раздвигаем панель для данных
+        dataPanel.setPreferredSize(new Dimension(250, 500)); // раздвигаем панель для данных
 
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
@@ -36,35 +36,40 @@ public class MainFrame implements ItemListener {
 
         JPanel comboBoxPanel = new JPanel();
         comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.Y_AXIS));
-        comboBoxPanel.setPreferredSize(new Dimension(200, 100)); // раздвигаем панель для чекбоксов
+        comboBoxPanel.setPreferredSize(new Dimension(200, 100)); // раздвигаем панель для комбобокса
 
         addXCoordinateOnPanel(checkBoxPanel); // добавляем чекбоксы на панель
-        comboBoxPanel.add(addYCoordinateOnPanel());
+        comboBoxPanel.add(addYCoordinateOnPanel()); //  добавляем комбобоксы на панель
 
         graph.addMouseListener(new MainFrame.mListener());
         // добавляем чекбоксы и график на панель графика
-        dataPanel.add(new JLabel("Выберите координату y для точки:"));
-        dataPanel.add(checkBoxPanel);
+
         JLabel labelChoiceX = new JLabel("Выберите координату х для точки:");
         labelChoiceX.add(Box.createVerticalStrut(300));
         labelChoiceX.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         dataPanel.add(labelChoiceX);
 
-
         dataPanel.add(comboBoxPanel);
+
         // добавляем метки на панель данных
+
+        dataPanel.add(new JLabel("Выберите координату y для точки:"));
+        dataPanel.add(checkBoxPanel);
         dataPanel.add(new JLabel("Выберите значение радиуса:"));
         EventSpinner();
         dataPanel.add(spinner);
         dataPanel.add(labelXData);
         dataPanel.add(labelYData);
         // добавляем кнопку на панель данных
+        String string = "Отметить точку";
+        Font font = new Font("Arial", Font.CENTER_BASELINE, 15);
         JButton button = new JButton("Отметить точку");
-        button.setPreferredSize(new Dimension(300, 300));
-        button.setPreferredSize(new Dimension(300, 300));
+        button.setFont(font);
+        button.setPreferredSize(new Dimension(200, 200));
+        button.setMargin(new Insets(30, 40, 30, 40));
         dataPanel.add(button);
         // добавляем spinner на панель
-
 
         dataPanel.add(Box.createVerticalStrut(70));
         ActionListener actionListener = new MainFrame.TestActionListener();
@@ -85,7 +90,7 @@ public class MainFrame implements ItemListener {
         graphPanel.setBorder(etched);
         // добавляем главную панель на окно
         mainFrame.getContentPane().add(mainPanel);
-        mainFrame.setPreferredSize(new Dimension(760, 480));
+        mainFrame.setPreferredSize(new Dimension(710, 480));
         mainFrame.setResizable(false);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -93,21 +98,21 @@ public class MainFrame implements ItemListener {
     }
 
     private JComboBox addYCoordinateOnPanel() {
-        String[] dataCoordinates = new String[Data.X.length];
-        for (int i = 0; i < Data.X.length; i++) {
-            dataCoordinates[i] = Double.toString(Data.X[i]);
+        String[] dataCoordinates = new String[Data.getCountOfCoordinates()];
+        for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
+            dataCoordinates[i] = Double.toString(Data.getX(i));
         }
         return new JComboBox(dataCoordinates);
     }
 
     private void addXCoordinateOnPanel(JPanel checkBoxPanel) {
-        for (int i = 0; i < Data.Y.length; i++) {
+        for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
             String checkBoxName;
             JCheckBox checkBox;
-            if (i < Data.Y.length) {
-                checkBoxName = Double.toString(Data.Y[i]);
+            if (i < Data.getCountOfCoordinates()) {
+                checkBoxName = Double.toString(Data.getY(i));
                 checkBox = new JCheckBox(checkBoxName);
-                checkBoxPanel.add(checkBox, BoxLayout.X_AXIS);
+                checkBoxPanel.add(checkBox);
             } else {
                 checkBoxName = "";
                 checkBox = new JCheckBox(checkBoxName);
@@ -136,12 +141,12 @@ public class MainFrame implements ItemListener {
         JCheckBox cb = (JCheckBox) ie.getItem();
         if (cb.isSelected())
             yPoint = Double.parseDouble(cb.getText());
-        for (int i = 0; i < Data.Y.length; i++) {
+        for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
             if (checkBoxesList.get(i) != cb)
                 checkBoxesList.get(i).setEnabled(false);
         }
         if (!cb.isSelected())
-            for (int i = 0; i < Data.X.length; i++) {
+            for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
                 checkBoxesList.get(i).setEnabled(true);
             }
     }
