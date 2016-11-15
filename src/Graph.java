@@ -76,9 +76,9 @@ class Graph extends JPanel implements Runnable {
         }
         double x1;
         double y1;
-        if (flag == true) {
-            x1 = (double) (x - w / 2) / steppast;
-            y1 = (double) (-y + h / 2) / steppast;
+        if (flag) {
+            x1 = (x - w / 2) / steppast;
+            y1 = (-y + h / 2) / steppast;
         } else {
             x1 = x;
             y1 = y;

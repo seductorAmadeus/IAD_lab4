@@ -5,16 +5,17 @@ import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class Main implements ItemListener {
+public class MainFrame implements ItemListener {
     private Graph graph = new Graph();
     private JLabel labelXData = new JLabel("x = ");
-    private JLabel label2 = new JLabel("y = ");
+    private JLabel labelYData = new JLabel("y = ");
     private int radius = 4;
     private double xPoint;
     private double yPoint;
     private ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
+    private JSpinner spinner;
 
-    Main() {
+    MainFrame() {
         JFrame mainFrame = new JFrame("Lab 4");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -27,22 +28,48 @@ public class Main implements ItemListener {
 
         JPanel dataPanel = new JPanel();
         dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
-        dataPanel.setPreferredSize(new Dimension(450, 500)); // раздвигаем панель для данных
+        dataPanel.setPreferredSize(new Dimension(300, 500)); // раздвигаем панель для данных
 
         JPanel checkBoxPanel = new JPanel();
-        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.X_AXIS));
+        checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
         checkBoxPanel.setPreferredSize(new Dimension(400, 100)); // раздвигаем панель для чекбоксов
 
         JPanel comboBoxPanel = new JPanel();
-        comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.X_AXIS));
+        comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.Y_AXIS));
         comboBoxPanel.setPreferredSize(new Dimension(200, 100)); // раздвигаем панель для чекбоксов
 
         addXCoordinateOnPanel(checkBoxPanel); // добавляем чекбоксы на панель
         comboBoxPanel.add(addYCoordinateOnPanel());
+
+        graph.addMouseListener(new MainFrame.mListener());
         // добавляем чекбоксы и график на панель графика
+        dataPanel.add(new JLabel("Выберите координату y для точки:"));
         dataPanel.add(checkBoxPanel);
+        JLabel labelChoiceX = new JLabel("Выберите координату х для точки:");
+        labelChoiceX.add(Box.createVerticalStrut(300));
+        labelChoiceX.setAlignmentX(Component.LEFT_ALIGNMENT);
+        dataPanel.add(labelChoiceX);
+
+
         dataPanel.add(comboBoxPanel);
-        dataPanel.add(Box.createVerticalStrut(400));
+        // добавляем метки на панель данных
+        dataPanel.add(new JLabel("Выберите значение радиуса:"));
+        EventSpinner();
+        dataPanel.add(spinner);
+        dataPanel.add(labelXData);
+        dataPanel.add(labelYData);
+        // добавляем кнопку на панель данных
+        JButton button = new JButton("Отметить точку");
+        button.setPreferredSize(new Dimension(300, 300));
+        button.setPreferredSize(new Dimension(300, 300));
+        dataPanel.add(button);
+        // добавляем spinner на панель
+
+
+        dataPanel.add(Box.createVerticalStrut(70));
+        ActionListener actionListener = new MainFrame.TestActionListener();
+        button.addActionListener(actionListener);
+
         graphPanel.add(graph);
         // добавляем панели на главную панель
         mainPanel.add(graphPanel, BorderLayout.EAST);
@@ -50,54 +77,15 @@ public class Main implements ItemListener {
         // рамка для отображения панелей
         Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
         // выставляем рамки
+        labelChoiceX.setBorder(etched);
         comboBoxPanel.setBorder(etched);
         checkBoxPanel.setBorder(etched);
         dataPanel.setBorder(etched);
         mainPanel.setBorder(etched);
         graphPanel.setBorder(etched);
-        /*
-        JPanel panel2 = new JPanel();// панель для разделения области под график и области под данные
-        JPanel panel3 = new JPanel(); // панель для разделения графика
-        JPanel panel4 = new JPanel(); // панель для данных
-        JPanel panel5 = new JPanel(); // панель для значений y
-        
-        panel3.add(graph);
-        panel2.add(panel3);
-        panel2.add(panel4);
-        panel1.add(panel2);
-        graph.addMouseListener(new Main.mListener());
-       //panel4.add(labelXData);
-       //panel4.add(label2);
-
-        panel4.add(new JLabel("Выберите координату х для точки:"));
-        DefaultListModel listModel = new DefaultListModel();
-
-
-        final JList list = new JList(listModel);
-        list.setSelectedIndex(0);
-        JScrollPane scr = new JScrollPane(list);
-        panel4.add(scr);
-        EventList(list);
-
-        panel4.add(new JLabel("Выберите координату y для точки:"));
-        panel4.add(panel5, BorderLayout.CENTER);
-
-
-        panel4.add(new JLabel("Введите значение radius:"));
-        EventSpinner();
-        panel3.add(graph);
-        panel4.add(spinner);
-
-        //panel4.add(panel6);
-        JButton button = new JButton("Отметить точку");
-        panel5.add(button);
-        //panel6.add(button);
-        ActionListener actionListener = new Main.TestActionListener();
-        button.addActionListener(actionListener);
-        mainFrame.getContentPane().add(panel2);
-        */
+        // добавляем главную панель на окно
         mainFrame.getContentPane().add(mainPanel);
-        mainFrame.setPreferredSize(new Dimension(900, 480));
+        mainFrame.setPreferredSize(new Dimension(760, 480));
         mainFrame.setResizable(false);
         mainFrame.pack();
         mainFrame.setVisible(true);
@@ -113,7 +101,6 @@ public class Main implements ItemListener {
     }
 
     private void addXCoordinateOnPanel(JPanel checkBoxPanel) {
-        // добавляем на панель чекбоксы
         for (int i = 0; i < Data.Y.length; i++) {
             String checkBoxName;
             JCheckBox checkBox;
@@ -134,24 +121,13 @@ public class Main implements ItemListener {
 
     private void EventSpinner() {
         SpinnerModel spinnerModel = new SpinnerNumberModel(4, 1, 10, 1);
-        JSpinner spinner = new JSpinner(spinnerModel);
+        spinner = new JSpinner(spinnerModel);
+        // запрещаем редактировование spinner-а.
+        JTextField tempTextField = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
+        tempTextField.setEditable(false);
         spinner.addChangeListener(e -> {
             radius = (int) ((JSpinner) e.getSource()).getValue();
             Paint(graph);
-        });
-    }
-
-    private void EventList(JList list) // обработчик событий для JList
-    {
-        list.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent evt) {
-                JList list = (JList) evt.getSource();
-                if (evt.getClickCount() == 1 || evt.getClickCount() == 2) {
-                    String value = list.getSelectedValue().toString();
-                    xPoint = Double.parseDouble(value);
-                }
-            }
         });
     }
 
@@ -192,7 +168,7 @@ public class Main implements ItemListener {
             String pattern = "##0.0";
             DecimalFormat decimalFormat = new DecimalFormat(pattern);
             labelXData.setText("x = " + decimalFormat.format((g.getXCoordinate() - g.w / 2) / g.step));
-            label2.setText("y = " + decimalFormat.format(-(g.getYCoordinate() - g.h / 2) / g.step));
+            labelYData.setText("y = " + decimalFormat.format(-(g.getYCoordinate() - g.h / 2) / g.step));
         }
 
         @Override
