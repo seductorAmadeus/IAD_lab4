@@ -73,7 +73,7 @@ public class Graph extends JPanel implements Runnable {
         graphic.setColor(colorOfThePlotArea);
         graphic.fillArc(ArcData.X, ArcData.Y, ArcData.WIDTH, ArcData.HEIGHT, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
         graphic.fillRect(RectData.X, RectData.Y, RectData.WIDTH, RectData.HEIGHT);
-        graph.fillPolygon(PoligonPoints.xPoints, PoligonPoints.yPoints, PoligonPoints.nPoints);
+        graph.fillPolygon(PolygonPoints.X_POINTS, PolygonPoints.Y_POINTS, PolygonPoints.N_POINTS);
 
         graphic.setColor(new Color(0xFF0045));
         graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, DEFAULT_GRAPH_HEIGHT, DEFAULT_GRAPH_WIDTH / 2, 0);            //оси координат
