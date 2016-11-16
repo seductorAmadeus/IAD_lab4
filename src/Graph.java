@@ -4,25 +4,25 @@ import java.awt.*;
 public class Graph extends JPanel implements Runnable {
     private static boolean flag;
     private static double x, y;
+    private static int radius = 4;
     private final int graphHeight = 450;
     private final int graphWidth = 450;
-    private static int radius = 4;
     private int step;
     private int green, red;
     private int steppast = 25;
     private int count = 0;
-    private Color color = Color.black;
+    private Color colorOfThePlotArea = Color.black;
 
     public static boolean getFlag() {
         return flag;
     }
 
-    public static void setRadius(int r) {
-        radius = r;
-    }
-
     public static void setFlag(boolean flag) {
         Graph.flag = flag;
+    }
+
+    public static void setRadius(int r) {
+        radius = r;
     }
 
     public static void setX(double x) {
@@ -72,8 +72,8 @@ public class Graph extends JPanel implements Runnable {
         /**
          * отрисовываем график. Переделать, пусть перерисовывается график, а не масштаб осей координат
          */
-        graphic.setColor(color);
-        graphic.fillArc(radius + 121, radius + 121, 200, 200, 0, 90); // вычислять через координаты
+        graphic.setColor(colorOfThePlotArea);
+        graphic.fillArc(125, 125, 200, 200, 0, 90); // вычислять через координаты
         graphic.fillRect(125, 225, 100, 100); // вычислять через координаты
         graph.fillPolygon(new int[]{175, 225, 225}, new int[]{225, 225, 175}, 3);
 
@@ -142,33 +142,33 @@ public class Graph extends JPanel implements Runnable {
     public void run() {
         try {
             for (int i = 0; i <= 245; i = i + 1) {
-                color = new Color(0, i, 255);
+                colorOfThePlotArea = new Color(0, i, 255);
                 repaint();
                 Thread.sleep(5);
             }
             for (int i = 0; i <= 245; i++) {
-                color = new Color(i, 245, 255);
+                colorOfThePlotArea = new Color(i, 245, 255);
                 repaint();
                 Thread.sleep(5);
             }
             for (int i = 255; i >= 220; i--) {
-                color = new Color(245, 245, i);
+                colorOfThePlotArea = new Color(245, 245, i);
                 repaint();
                 Thread.sleep(5);
             }
             Thread.sleep(200);
             for (int i = 220; i <= 255; i++) {
-                color = new Color(245, 245, i);
+                colorOfThePlotArea = new Color(245, 245, i);
                 repaint();
                 Thread.sleep(10);
             }
             for (int i = 245; i >= 0; i--) {
-                color = new Color(i, 245, 255);
+                colorOfThePlotArea = new Color(i, 245, 255);
                 repaint();
                 Thread.sleep(5);
             }
             for (int i = 245; i >= 0; i--) {
-                color = new Color(0, i, 255);
+                colorOfThePlotArea = new Color(0, i, 255);
                 repaint();
                 Thread.sleep(10);
             }
