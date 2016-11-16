@@ -1,3 +1,5 @@
+import com.sun.media.sound.FFT;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +11,7 @@ public class Graph extends JPanel implements Runnable {
     private int radius = 4;
     private int step;
     private int green, red;
-    private int steppast = 25;
+    private int stepPast = 25;
     private int count = 0;
     private Color colorOfThePlotArea = Color.black;
 
@@ -87,7 +89,7 @@ public class Graph extends JPanel implements Runnable {
         for (int i = radius; i >= 1; i--) {
             graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - i * step, DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH / 2 - i * step, DEFAULT_GRAPH_HEIGHT / 2 + 3);
             graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 - i * step, DEFAULT_GRAPH_HEIGHT / 2 + 17);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * step, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * step);            //цена деления
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * step, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * step);//цена деления
             graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT / 2 - i * step + 5);
             graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * step), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * step), DEFAULT_GRAPH_HEIGHT / 2 + 3);            //цена деления
             graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * step + 5), DEFAULT_GRAPH_HEIGHT / 2 + 17);
@@ -97,18 +99,23 @@ public class Graph extends JPanel implements Runnable {
         double x1;
         double y1;
         if (flag) {
-            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / steppast;
-            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / steppast;
+            //System.out.println(x);
+            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / stepPast;
+            //System.out.println(x1);
+            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / stepPast;
         } else {
             x1 = x;
             y1 = y;
         }
         boolean fcolor;
-        if ((x1 <= radius & x1 >= 0 & ((y1 >= -radius & y1 <= 0) || (Math.pow(x1, 2) + Math.pow(y1, 2) <= Math.pow(radius, 2) / 4))) || (x1 >= -radius & x1 <= 0 & y1 >= -radius & y1 <= 0 & x1 >= -radius - y1)) {
-            graphic.setColor(Color.green);
+        //if (( ((x1<=radius) && (y1<=radius)) || (x1>= -radius) && (y1 >= -radius) || (x1 >= -radius/2) && (y1 <= radius/2))){
+        if ((x1 <= radius & x1 >= 0 & ((y1 >= -radius & y1 <= 0) ||
+                (Math.pow(x1, 2) + Math.pow(y1, 2) <= Math.pow(radius, 2) / 2))) || // изменить условие для окружности
+                (x1 >= -radius & x1 <= 0 & y1 >= -radius & y1 <= 0) || // квадрат
+                ((x1 >= -radius / 2) & (x1 <= 0) & (y1 <= radius / 2) & (y1 >= 0) & (y1 <= x1 + radius / 2))) { // подкорректировать треугольник.
+            graphic.setColor(new Color(0x53F22C));
             green = 1;
-            if (red == 1) fcolor = true;
-            else fcolor = false;
+            fcolor = red == 1;
             red = 0;
         } else {
             graphic.setColor(Color.red);
@@ -132,7 +139,7 @@ public class Graph extends JPanel implements Runnable {
         }
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
-        steppast = step;
+        stepPast = step;
     }
 
     @Override
@@ -169,7 +176,8 @@ public class Graph extends JPanel implements Runnable {
                 repaint();
                 Thread.sleep(10);
             }
-        } catch (Exception e) {
+        } catch (Exception exp) {
+            exp.printStackTrace();
         }
     }
 

@@ -6,15 +6,13 @@ public class Data {
 
     private static ArrayList<Point> points = new ArrayList<>();
     private static ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
-    //private static JComboBox comboBoxArrayList = new JComboBox();
+    private static JComboBox<String> comboBox = new JComboBox<>();
 
     static {
         Point[] point = new Point[]{new Point(3, -3), new Point(-3, 0), new Point(-1, 2), new Point(-4, 5), new Point(1, 2),
                 new Point(0, 0), new Point(-1, 4), new Point(-4, 5), new Point(3, 3)};
-
         // добавляем в ArrayList точки.
         Collections.addAll(points, point);
-
     }
 
     public static double getX(int i) {
