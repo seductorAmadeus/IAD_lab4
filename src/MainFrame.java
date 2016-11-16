@@ -84,6 +84,13 @@ public class MainFrame implements ItemListener {
         mainPanel.setBorder(etched);
         graphPanel.setBorder(etched);
         */
+        // Добавляем меню.
+        JMenu jMenu = new JMenu("About");
+        JMenuItem menuItemAbout = new JMenuItem("Author");
+        jMenu.add(menuItemAbout);
+        JMenuBar jMenuBar = new JMenuBar();
+        jMenuBar.add(jMenu);
+        mainFrame.setJMenuBar(jMenuBar);
         // добавляем главную панель на окно
         mainFrame.getContentPane().add(mainPanel);
         mainFrame.setPreferredSize(new Dimension(710, 480));
