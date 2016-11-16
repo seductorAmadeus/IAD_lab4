@@ -97,20 +97,17 @@ public class Graph extends JPanel implements Runnable {
         double x1;
         double y1;
         if (flag) {
-            //System.out.println(x);
             x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / stepPast;
-            //System.out.println(x1);
             y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / stepPast;
         } else {
             x1 = x;
             y1 = y;
         }
         boolean fcolor;
-        //if (( ((x1<=radius) && (y1<=radius)) || (x1>= -radius) && (y1 >= -radius) || (x1 >= -radius/2) && (y1 <= radius/2))){
-        if ((x1 <= radius & x1 >= 0 & ((y1 >= -radius & y1 <= 0) ||
-                (Math.pow(x1, 2) + Math.pow(y1, 2) <= Math.pow(radius, 2) / 2))) || // изменить условие для окружности
+        if (((x1 <= radius & x1 >= 0) & (y1 <= radius & y1 >= 0) &
+                ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(radius, 2)))) || // изменить условие для окружности
                 (x1 >= -radius & x1 <= 0 & y1 >= -radius & y1 <= 0) || // квадрат
-                ((x1 >= -(double) radius / 2.0) & (x1 <= 0) & (y1 <= (double) radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) radius / 2.0))) { // подкорректировать треугольник.
+                ((x1 >= -(double) radius / 2.0) & (x1 <= 0) & (y1 <= (double) radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) radius / 2.0)))) {
             graphic.setColor(new Color(0x53F22C));
             green = 1;
             fcolor = red == 1;
