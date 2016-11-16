@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
-import java.util.*;
 
 public class MainFrame implements ItemListener {
     private Graph graph = new Graph();
@@ -40,7 +39,7 @@ public class MainFrame implements ItemListener {
 
         comboBoxPanel.add(addXCoordinateOnPanel()); //  добавляем комбобоксы на панель
 
-        graph.addMouseListener(new MainFrame.mListener());
+        graph.addMouseListener(new mouseListener());
 
         JLabel labelChoiceX = new JLabel("Choose the X-coordinate of a point:");
         labelChoiceX.add(Box.createVerticalStrut(300));
@@ -59,15 +58,14 @@ public class MainFrame implements ItemListener {
         dataPanel.add(labelXData);
         dataPanel.add(labelYData);
         // добавляем кнопку на панель данных
-        Font font = new Font("Arial", Font.CENTER_BASELINE, 15);
+        Font font = new Font("Arial", Font.CENTER_BASELINE, 14);
         JButton button = new JButton("Add the point");
         button.setFont(font);
-        button.setPreferredSize(new Dimension(200, 200));
         button.setMargin(new Insets(30, 40, 30, 40));
         dataPanel.add(button);
         // добавляем spinner на панель
 
-        dataPanel.add(Box.createVerticalStrut(70));
+        dataPanel.add(Box.createVerticalStrut(60));
         ActionListener actionListener = new MainFrame.TestActionListener();
         button.addActionListener(actionListener);
 
@@ -86,13 +84,6 @@ public class MainFrame implements ItemListener {
         mainPanel.setBorder(etched);
         graphPanel.setBorder(etched);
         */
-        // Добавляем меню.
-        JMenu jMenu = new JMenu("About");
-        JMenuItem menuItemAbout = new JMenuItem("Author");
-        jMenu.add(menuItemAbout);
-        JMenuBar jMenuBar = new JMenuBar();
-        jMenuBar.add(jMenu);
-        mainFrame.setJMenuBar(jMenuBar);
         // добавляем главную панель на окно
         mainFrame.getContentPane().add(mainPanel);
         mainFrame.setPreferredSize(new Dimension(710, 480));
@@ -113,7 +104,6 @@ public class MainFrame implements ItemListener {
     }
 
     private JCheckBox addYCoordinateOnPanel(int i) {
-        //for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
         String checkBoxName;
         JCheckBox checkBox;
         checkBoxName = Double.toString(Data.getY(i));
@@ -157,7 +147,7 @@ public class MainFrame implements ItemListener {
         graph.repaint();
     }
 
-    private class mListener implements MouseListener {
+    private class mouseListener implements MouseListener {
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
             Graph graph = (Graph) mouseEvent.getSource();
