@@ -2,43 +2,43 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Graph extends JPanel implements Runnable {
-    private static boolean flag;
-    private static double x, y;
-    private static int radius = 4;
-    private final int graphHeight = 450;
-    private final int graphWidth = 450;
+    private final int DEFAULT_GRAPH_HEIGHT = 450;
+    private final int DEFAULT_GRAPH_WIDTH = 450;
+    private boolean flag;
+    private double x, y;
+    private int radius = 4;
     private int step;
     private int green, red;
     private int steppast = 25;
     private int count = 0;
     private Color colorOfThePlotArea = Color.black;
 
-    public static boolean getFlag() {
+    public boolean getFlag() {
         return flag;
     }
 
-    public static void setFlag(boolean flag) {
-        Graph.flag = flag;
+    public void setFlag(boolean flag) {
+        this.flag = flag;
     }
 
-    public static void setRadius(int r) {
-        radius = r;
+    public void setRadius(int radius) {
+        this.radius = radius;
     }
 
-    public static void setX(double x) {
-        Graph.x = x;
+    public void setX(double x) {
+        this.x = x;
     }
 
-    public static void setY(double y) {
-        Graph.y = y;
+    public void setY(double y) {
+        this.y = y;
     }
 
     public int getGraphHeight() {
-        return graphHeight;
+        return DEFAULT_GRAPH_HEIGHT;
     }
 
     public int getGraphWidth() {
-        return graphWidth;
+        return DEFAULT_GRAPH_WIDTH;
     }
 
     public int getStep() {
@@ -65,42 +65,40 @@ public class Graph extends JPanel implements Runnable {
     protected void paintComponent(Graphics graph) {
         count += 1;
         step = 100 / radius;
-        setSize(graphWidth, graphHeight);
+        setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
         Graphics2D graphic = (Graphics2D) graph;
         super.paintComponent(graphic);
         this.setBackground(new Color(0xFF, 248, 116));
-        /**
-         * отрисовываем график. Переделать, пусть перерисовывается график, а не масштаб осей координат
-         */
+
         graphic.setColor(colorOfThePlotArea);
-        graphic.fillArc(125, 125, 200, 200, 0, 90); // вычислять через координаты
-        graphic.fillRect(125, 225, 100, 100); // вычислять через координаты
-        graph.fillPolygon(new int[]{175, 225, 225}, new int[]{225, 225, 175}, 3);
+        graphic.fillArc(ArcData.X, ArcData.Y, ArcData.WIDTH, ArcData.HEIGHT, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
+        graphic.fillRect(RectData.X, RectData.Y, RectData.WIDTH, RectData.HEIGHT);
+        graph.fillPolygon(PoligonPoints.xPoints, PoligonPoints.yPoints, PoligonPoints.nPoints);
 
         graphic.setColor(new Color(0xFF0045));
-        graphic.drawLine(graphWidth / 2, graphHeight, graphWidth / 2, 0);            //оси координат
-        graphic.drawLine(graphWidth / 2, 0, graphWidth / 2 - 4, 10);
-        graphic.drawLine(graphWidth / 2, 0, graphWidth / 2 + 4, 10);
-        graphic.drawLine(0, graphHeight / 2, graphWidth, graphHeight / 2);
-        graphic.drawLine(graphWidth - 10, graphHeight / 2 - 4, graphWidth, graphHeight / 2);
-        graphic.drawLine(graphWidth - 10, graphHeight / 2 + 4, graphWidth, graphHeight / 2);
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, DEFAULT_GRAPH_HEIGHT, DEFAULT_GRAPH_WIDTH / 2, 0);            //оси координат
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, 0, DEFAULT_GRAPH_WIDTH / 2 - 4, 10);
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, 0, DEFAULT_GRAPH_WIDTH / 2 + 4, 10);
+        graphic.drawLine(0, DEFAULT_GRAPH_HEIGHT / 2, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH - 10, DEFAULT_GRAPH_HEIGHT / 2 - 4, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH - 10, DEFAULT_GRAPH_HEIGHT / 2 + 4, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
 
-        graphic.drawString("0", graphWidth / 2 + 2, graphHeight / 2 + 14);
+        graphic.drawString("0", DEFAULT_GRAPH_WIDTH / 2 + 2, DEFAULT_GRAPH_HEIGHT / 2 + 14);
         for (int i = radius; i >= 1; i--) {
-            graphic.drawLine(graphWidth / 2 - i * step, graphHeight / 2 - 3, graphWidth / 2 - i * step, graphHeight / 2 + 3);
-            graphic.drawString("-" + i, graphWidth / 2 - i * step, graphHeight / 2 + 17);
-            graphic.drawLine(graphWidth / 2 - 3, graphHeight / 2 - i * step, graphWidth / 2 + 3, graphHeight / 2 - i * step);            //цена деления
-            graphic.drawString("" + i, graphWidth / 2 + 17, graphHeight / 2 - i * step + 5);
-            graphic.drawLine(graphWidth - (graphWidth / 2 - i * step), graphHeight / 2 - 3, graphWidth - (graphWidth / 2 - i * step), graphHeight / 2 + 3);            //цена деления
-            graphic.drawString("" + i, graphWidth - (graphWidth / 2 - i * step + 5), graphHeight / 2 + 17);
-            graphic.drawLine(graphWidth / 2 - 3, graphHeight - (graphHeight / 2 - step * i), graphWidth / 2 + 3, graphHeight - (graphHeight / 2 - i * step));            //цена деления
-            graphic.drawString("-" + i, graphWidth / 2 + 17, graphHeight - (graphHeight / 2 - i * step - 5));
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - i * step, DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH / 2 - i * step, DEFAULT_GRAPH_HEIGHT / 2 + 3);
+            graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 - i * step, DEFAULT_GRAPH_HEIGHT / 2 + 17);
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * step, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * step);            //цена деления
+            graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT / 2 - i * step + 5);
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * step), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * step), DEFAULT_GRAPH_HEIGHT / 2 + 3);            //цена деления
+            graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * step + 5), DEFAULT_GRAPH_HEIGHT / 2 + 17);
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - step * i), DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * step));            //цена деления
+            graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * step - 5));
         }
         double x1;
         double y1;
         if (flag) {
-            x1 = (x - graphWidth / 2) / steppast;
-            y1 = (-y + graphHeight / 2) / steppast;
+            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / steppast;
+            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / steppast;
         } else {
             x1 = x;
             y1 = y;
@@ -115,8 +113,7 @@ public class Graph extends JPanel implements Runnable {
         } else {
             graphic.setColor(Color.red);
             red = 1;
-            if (green == 1) fcolor = true;
-            else fcolor = false;
+            fcolor = green == 1;
             green = 0;
         }
         if (fcolor) {
@@ -125,13 +122,13 @@ public class Graph extends JPanel implements Runnable {
         double x2;
         double y2;
         if (flag) {
-            x2 = x1 * step + graphWidth / 2;
-            y2 = -y1 * step + graphHeight / 2;
+            x2 = x1 * step + DEFAULT_GRAPH_WIDTH / 2;
+            y2 = -y1 * step + DEFAULT_GRAPH_HEIGHT / 2;
             x = x2;
             y = y2;
         } else {
-            x2 = graphWidth / 2 + x * step;
-            y2 = (graphHeight / 2) - y * step;
+            x2 = DEFAULT_GRAPH_WIDTH / 2 + x * step;
+            y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * step;
         }
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);

@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
@@ -20,27 +19,26 @@ public class MainFrame implements ItemListener {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
 
-        JPanel graphPanel = new JPanel(); // панель для графика
+        JPanel graphPanel = new JPanel();
         graphPanel.setLayout(new BoxLayout(graphPanel, BoxLayout.Y_AXIS));
-        graphPanel.setPreferredSize(new Dimension(450, 250)); // раздвигаем панель для графика
+        graphPanel.setPreferredSize(new Dimension(450, 250));
 
         JPanel dataPanel = new JPanel();
         dataPanel.setLayout(new BoxLayout(dataPanel, BoxLayout.Y_AXIS));
-        dataPanel.setPreferredSize(new Dimension(250, 500)); // раздвигаем панель для данных
+        dataPanel.setPreferredSize(new Dimension(250, 500));
 
         JPanel checkBoxPanel = new JPanel();
         checkBoxPanel.setLayout(new BoxLayout(checkBoxPanel, BoxLayout.Y_AXIS));
-        checkBoxPanel.setPreferredSize(new Dimension(400, 100)); // раздвигаем панель для чекбоксов
+        checkBoxPanel.setPreferredSize(new Dimension(400, 100));
 
         JPanel comboBoxPanel = new JPanel();
         comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.Y_AXIS));
-        comboBoxPanel.setPreferredSize(new Dimension(200, 100)); // раздвигаем панель для комбобокса
+        comboBoxPanel.setPreferredSize(new Dimension(200, 100));
 
         addXCoordinateOnPanel(checkBoxPanel); // добавляем чекбоксы на панель
         comboBoxPanel.add(addYCoordinateOnPanel()); //  добавляем комбобоксы на панель
 
         graph.addMouseListener(new MainFrame.mListener());
-        // добавляем чекбоксы и график на панель графика
 
         JLabel labelChoiceX = new JLabel("Выберите координату х для точки:");
         labelChoiceX.add(Box.createVerticalStrut(300));
@@ -128,30 +126,30 @@ public class MainFrame implements ItemListener {
         // запрещаем редактировование spinner-а.
         JTextField tempTextField = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
         tempTextField.setEditable(false);
-        spinner.addChangeListener(e -> {
-            Graph.setRadius((int) ((JSpinner) e.getSource()).getValue());
+        spinner.addChangeListener(event -> {
+            graph.setRadius((int) ((JSpinner) event.getSource()).getValue());
             Paint(graph);
         });
     }
 
     @Override
     public void itemStateChanged(ItemEvent itemEvent) {
-        JCheckBox cb = (JCheckBox) itemEvent.getItem();
-        if (cb.isSelected())
-            yPoint = Double.parseDouble(cb.getText());
+        JCheckBox checkBox = (JCheckBox) itemEvent.getItem();
+        if (checkBox.isSelected())
+            yPoint = Double.parseDouble(checkBox.getText());
         for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
-            if (checkBoxesList.get(i) != cb)
+            if (checkBoxesList.get(i) != checkBox)
                 checkBoxesList.get(i).setEnabled(false);
         }
-        if (!cb.isSelected())
+        if (!checkBox.isSelected())
             for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
                 checkBoxesList.get(i).setEnabled(true);
             }
     }
 
     private void Paint(Graph graph) {
-        if (!Graph.getFlag()) {
-            Graph.setY((int) yPoint);
+        if (!graph.getFlag()) {
+            graph.setY((int) yPoint);
         }
         graph.repaint();
     }
@@ -162,9 +160,9 @@ public class MainFrame implements ItemListener {
             Graph graph = (Graph) mouseEvent.getSource();
             graph.setRed(0);
             graph.setGreen(0);
-            Graph.setX(mouseEvent.getX());
-            Graph.setY(mouseEvent.getY());
-            Graph.setFlag(true);
+            graph.setX(mouseEvent.getX());
+            graph.setY(mouseEvent.getY());
+            graph.setFlag(true);
             graph.repaint();
             String pattern = "##0.0";
             DecimalFormat decimalFormat = new DecimalFormat(pattern);
@@ -192,7 +190,7 @@ public class MainFrame implements ItemListener {
     private class TestActionListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            Graph.setFlag(false);
+            graph.setFlag(false);
             Paint(graph);
         }
     }
