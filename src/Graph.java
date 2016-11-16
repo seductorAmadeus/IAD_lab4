@@ -1,5 +1,3 @@
-import com.sun.media.sound.FFT;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -112,7 +110,7 @@ public class Graph extends JPanel implements Runnable {
         if ((x1 <= radius & x1 >= 0 & ((y1 >= -radius & y1 <= 0) ||
                 (Math.pow(x1, 2) + Math.pow(y1, 2) <= Math.pow(radius, 2) / 2))) || // изменить условие для окружности
                 (x1 >= -radius & x1 <= 0 & y1 >= -radius & y1 <= 0) || // квадрат
-                ((x1 >= -radius / 2) & (x1 <= 0) & (y1 <= radius / 2) & (y1 >= 0) & (y1 <= x1 + radius / 2))) { // подкорректировать треугольник.
+                ((x1 >= -(double) radius / 2.0) & (x1 <= 0) & (y1 <= (double) radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) radius / 2.0))) { // подкорректировать треугольник.
             graphic.setColor(new Color(0x53F22C));
             green = 1;
             fcolor = red == 1;
