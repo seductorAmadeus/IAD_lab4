@@ -198,6 +198,4 @@ public class GraphPanel extends JPanel implements Runnable, ActionListener {
         }
         this.repaint();
     }
-
-
 }

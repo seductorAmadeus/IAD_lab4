@@ -1,8 +1,11 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.text.DecimalFormat;
 import javax.swing.border.Border;
 
-public class MainFrame extends JFrame {
+public class MainFrame extends JFrame implements MouseListener {
     private DataPanel dataPanel;
     private GraphPanel graphPanel;
 
@@ -14,6 +17,7 @@ public class MainFrame extends JFrame {
         mainPanel.add(graphPanel, BorderLayout.EAST);
         dataPanel = new DataPanel();
         mainPanel.add(dataPanel, BorderLayout.WEST);
+        graphPanel.addMouseListener(this);
         // add a borders for display panels
         Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
         dataPanel.setBorder(etched);
@@ -39,4 +43,36 @@ public class MainFrame extends JFrame {
         jMenuBar.add(jMenu);
         return jMenuBar;
     }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        GraphPanel graphPanel = (GraphPanel) mouseEvent.getSource();
+        graphPanel.setRed(0);
+        graphPanel.setGreen(0);
+        graphPanel.setX(mouseEvent.getX());
+        graphPanel.setY(mouseEvent.getY());
+        graphPanel.setFlag(true);
+        graphPanel.repaint();
+        String pattern = "##0.0";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        dataPanel.changeLabelX("x = " + decimalFormat.format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / graphPanel.getStep()));
+        dataPanel.changeLabelY("y = " + decimalFormat.format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / graphPanel.getStep()));
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+    }
+
 }
