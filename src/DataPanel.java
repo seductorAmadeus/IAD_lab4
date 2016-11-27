@@ -12,7 +12,7 @@ public class DataPanel extends JPanel implements ItemListener {
     DataPanel() {
         graphPanel = new GraphPanel();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setPreferredSize(new Dimension(250, 500));
+        this.setPreferredSize(new Dimension(230, 500));
 
         JLabel labelChoiceX = new JLabel("Choose the X-coordinate of a point:");
         labelChoiceX.add(Box.createVerticalStrut(300));

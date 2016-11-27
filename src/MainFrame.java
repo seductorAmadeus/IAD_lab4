@@ -28,7 +28,7 @@ public class MainFrame extends JFrame implements MouseListener {
         // add the main panel on the frame
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.getContentPane().add(mainPanel);
-        this.setPreferredSize(new Dimension(730, 520));
+        this.setPreferredSize(new Dimension(710, 520));
         this.setResizable(false);
         this.pack();
         this.setVisible(true);
