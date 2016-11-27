@@ -38,9 +38,9 @@ public class DataPanel extends JPanel implements ItemListener {
         this.add(new JLabel("Choose the Y-coordinate of a point:"));
         this.add(checkBoxPanel);
         this.add(new JLabel("Choose the value of a radius:"));
+        this.add(getSpinner());
         this.add(labelXData);
         this.add(labelYData);
-        this.add(getSpinner());
         Font font = new Font("Arial", Font.CENTER_BASELINE, 14);
         JButton button = new JButton("Add the point");
         button.setFont(font);
