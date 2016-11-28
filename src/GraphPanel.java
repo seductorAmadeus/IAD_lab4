@@ -1,9 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class GraphPanel extends JPanel implements Runnable, ActionListener {
+public class GraphPanel extends JPanel implements Runnable {
     private final int DEFAULT_GRAPH_HEIGHT = 470;
     private final int DEFAULT_GRAPH_WIDTH = 470;
     private boolean flag;
@@ -190,12 +188,4 @@ public class GraphPanel extends JPanel implements Runnable, ActionListener {
         new Thread(this).start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent actionEvent) {
-        this.setFlag(false);
-        if (!this.getFlag()) {
-            this.setY((int) getY());
-        }
-        this.repaint();
-    }
 }
