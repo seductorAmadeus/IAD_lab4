@@ -11,22 +11,12 @@ public class Data {
     static {
         Point[] point = new Point[]{new Point(3, -3), new Point(-3, 0), new Point(-1, 2), new Point(-4, 5), new Point(1, 2),
                 new Point(0, 0), new Point(-1, 4), new Point(-4, 5), new Point(3, 3)};
-        // добавляем в ArrayList точки.
         Collections.addAll(points, point);
     }
 
     public static double getX(int i) {
         return points.get(i).getX();
     }
-
-    /* public static void setComboBox(int i, Object comboBox) {
-         comboBoxArrayList.add(comboBox, i);
-     }
-
-    public static JComboBox getComboBox(int i) {
-        return (JComboBox) comboBoxArrayList.getItemAt(i);
-    }
-    */
 
     public static void setCheckBox(int i, JCheckBox checkBox) {
         checkBoxesList.add(i, checkBox);
