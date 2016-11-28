@@ -55,6 +55,16 @@ public class MainFrame extends JFrame implements MouseListener {
         graphPanel.repaint();
         String pattern = "##0.0";
         DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        /*Test action from MainFrame: */
+        System.out.println("____________________________________________________");
+        System.out.println("Test action from MainFrame: ");
+        System.out.println("graphPanel.x = " + graphPanel.getXCoordinate());
+        System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
+        System.out.println("graphPanel.GraphWidth = " + graphPanel.getGraphWidth());
+        System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
+        System.out.println("graphPanel.step = " + graphPanel.getStep());
+        System.out.println("____________________________________________________");
+        /*end of test action*/
         dataPanel.changeLabelX("x = " + decimalFormat.format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / graphPanel.getStep()));
         dataPanel.changeLabelY("y = " + decimalFormat.format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / graphPanel.getStep()));
     }

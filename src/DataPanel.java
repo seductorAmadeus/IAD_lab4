@@ -38,8 +38,15 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
             String value = comboBox.getSelectedItem().toString();
             comboBox.actionPerformed(e);
             xPoint = Double.parseDouble(value);
-            //fix it!
-            this.changeLabelX("x = " + decimalFormat.format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / graphPanel.getStep()));
+            /*Test action from MainFrame: */
+            System.out.println("____________________________________________________");
+            System.out.println("Test action from DataPanel: ");
+            System.out.println("graphPanel.x = " + this.graphPanel.getXCoordinate());
+            System.out.println("graphPanel.GraphWidth = " + this.graphPanel.getGraphWidth());
+            System.out.println("graphPanel.step = " + this.graphPanel.getStep());
+            System.out.println("____________________________________________________");
+            /*end of test action*/
+            this.changeLabelX("x = " + decimalFormat.format(this.graphPanel.getXCoordinate()));
             comboBox.actionPerformed(e);
         };
 
@@ -100,8 +107,15 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
         JCheckBox checkBox = (JCheckBox) itemEvent.getItem();
         if (checkBox.isSelected()) {
             yPoint = Double.parseDouble(checkBox.getText());
-            //fix it!
-            this.changeLabelY("y = " + decimalFormat.format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / graphPanel.getStep()));
+            /*Test action from MainFrame: */
+            System.out.println("____________________________________________________");
+            System.out.println("Test action from DataPanel: ");
+            System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
+            System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
+            System.out.println("graphPanel.step = " + graphPanel.getStep());
+            System.out.println("____________________________________________________");
+            /*end of test action*/
+            this.changeLabelY("y = " + decimalFormat.format(graphPanel.getYCoordinate()));
         }
         for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
             if (Data.getCheckBox(i) != checkBox)
