@@ -53,8 +53,6 @@ public class MainFrame extends JFrame implements MouseListener {
         graphPanel.setY(mouseEvent.getY());
         graphPanel.setFlag(true);
         graphPanel.repaint();
-        String pattern = "##0.0";
-        DecimalFormat decimalFormat = new DecimalFormat(pattern);
         /*Test action from MainFrame: */
         System.out.println("____________________________________________________");
         System.out.println("Test action from MainFrame: ");
@@ -65,8 +63,8 @@ public class MainFrame extends JFrame implements MouseListener {
         System.out.println("graphPanel.step = " + graphPanel.getStep());
         System.out.println("____________________________________________________");
         /*end of test action*/
-        dataPanel.changeLabelX("x = " + decimalFormat.format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / graphPanel.getStep()));
-        dataPanel.changeLabelY("y = " + decimalFormat.format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / graphPanel.getStep()));
+        dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / graphPanel.getStep()));
+        dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / graphPanel.getStep()));
     }
 
     @Override

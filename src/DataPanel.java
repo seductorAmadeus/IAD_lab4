@@ -9,7 +9,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
     private GraphPanel graphPanel;
     private double yPoint;
     private double xPoint;
-    private DecimalFormat decimalFormat = new DecimalFormat("##0.0");
     private JCheckBox checkBox;
 
     DataPanel(GraphPanel graphPanel) {
@@ -68,14 +67,10 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         JButton button = new JButton("Add the point");
         button.setFont(font);
         button.setMargin(new Insets(30, 40, 30, 40));
-        // CHANGE IT!!!!
-        // ActionListener actionListener = new GraphPanel().TestActionListener();
-
         button.addActionListener(this);
         // add the spacer on the data panel
         this.add(Box.createVerticalStrut(20));
         this.add(button);
-        // add the spacer on the data panel
         this.add(Box.createVerticalStrut(100));
     }
 
@@ -173,8 +168,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         graphPanel.setY(yPoint);
         graphPanel.setFlag(true);
         graphPanel.repaint();
-        String pattern = "##0.0";
-        DecimalFormat decimalFormat = new DecimalFormat(pattern);
         /*Test action from DataPanel: */
         System.out.println("____________________________________________________");
         System.out.println("Test action from MainFrame: ");
@@ -185,8 +178,8 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         System.out.println("graphPanel.step = " + graphPanel.getStep());
         System.out.println("____________________________________________________");
         /*end of test action*/
-        changeLabelX("x = " + decimalFormat.format(graphPanel.getXCoordinate()));
-        changeLabelY("y = " + decimalFormat.format(graphPanel.getYCoordinate()));
+        changeLabelX("x = " + new DecimalFormat("##0.0").format(graphPanel.getXCoordinate()));
+        changeLabelY("y = " + new DecimalFormat("##0.0").format(graphPanel.getYCoordinate()));
     }
 
     @Override
@@ -204,6 +197,5 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
     @Override
     public void mousePressed(MouseEvent mouseEvent) {
     }
-
 
 }
