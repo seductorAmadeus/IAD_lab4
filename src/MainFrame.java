@@ -15,7 +15,7 @@ public class MainFrame extends JFrame implements MouseListener {
         // add a panels to the main panel
         graphPanel = new GraphPanel();
         mainPanel.add(graphPanel, BorderLayout.EAST);
-        dataPanel = new DataPanel();
+        dataPanel = new DataPanel(graphPanel);
         mainPanel.add(dataPanel, BorderLayout.WEST);
         graphPanel.addMouseListener(this);
         // add a borders for display panels
