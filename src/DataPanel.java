@@ -3,13 +3,14 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 
-public class DataPanel extends JPanel implements ItemListener, ActionListener {
+public class DataPanel extends JPanel implements ItemListener, ActionListener, MouseListener {
     private JLabel labelXData = new JLabel("x = ");
     private JLabel labelYData = new JLabel("y = ");
     private GraphPanel graphPanel;
     private double yPoint;
     private double xPoint;
     private DecimalFormat decimalFormat = new DecimalFormat("##0.0");
+    private JCheckBox checkBox;
 
     DataPanel(GraphPanel graphPanel) {
         this.graphPanel = graphPanel;
@@ -38,7 +39,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
             String value = comboBox.getSelectedItem().toString();
             comboBox.actionPerformed(e);
             xPoint = Double.parseDouble(value);
-            /*Test action from MainFrame: */
+            /*Test action from MainFrame:
             System.out.println("____________________________________________________");
             System.out.println("Test action from DataPanel: ");
             System.out.println("graphPanel.x = " + this.graphPanel.getXCoordinate());
@@ -46,7 +47,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
             System.out.println("graphPanel.step = " + this.graphPanel.getStep());
             System.out.println("____________________________________________________");
             /*end of test action*/
-            this.changeLabelX("x = " + decimalFormat.format(this.graphPanel.getXCoordinate()));
+            //  this.changeLabelX("x = " + decimalFormat.format(this.graphPanel.getXCoordinate()));
             comboBox.actionPerformed(e);
         };
 
@@ -104,10 +105,11 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
 
     @Override
     public void itemStateChanged(ItemEvent itemEvent) {
-        JCheckBox checkBox = (JCheckBox) itemEvent.getItem();
+        checkBox = (JCheckBox) itemEvent.getItem();
+        checkBox.addMouseListener(this);
         if (checkBox.isSelected()) {
             yPoint = Double.parseDouble(checkBox.getText());
-            /*Test action from MainFrame: */
+            /*Test action from MainFrame:
             System.out.println("____________________________________________________");
             System.out.println("Test action from DataPanel: ");
             System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
@@ -115,7 +117,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
             System.out.println("graphPanel.step = " + graphPanel.getStep());
             System.out.println("____________________________________________________");
             /*end of test action*/
-            this.changeLabelY("y = " + decimalFormat.format(graphPanel.getYCoordinate()));
+            //this.changeLabelY("y = " + decimalFormat.format(graphPanel.getYCoordinate()));
         }
         for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
             if (Data.getCheckBox(i) != checkBox)
@@ -161,5 +163,47 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener {
         graphPanel.setFlag(false);
         Paint(graphPanel);
     }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        // graphPanel = (GraphPanel) mouseEvent.getSource();
+        graphPanel.setRed(0);
+        graphPanel.setGreen(0);
+        graphPanel.setX(xPoint);
+        graphPanel.setY(yPoint);
+        graphPanel.setFlag(true);
+        graphPanel.repaint();
+        String pattern = "##0.0";
+        DecimalFormat decimalFormat = new DecimalFormat(pattern);
+        /*Test action from DataPanel: */
+        System.out.println("____________________________________________________");
+        System.out.println("Test action from MainFrame: ");
+        System.out.println("graphPanel.x = " + graphPanel.getXCoordinate());
+        System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
+        System.out.println("graphPanel.GraphWidth = " + graphPanel.getGraphWidth());
+        System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
+        System.out.println("graphPanel.step = " + graphPanel.getStep());
+        System.out.println("____________________________________________________");
+        /*end of test action*/
+        changeLabelX("x = " + decimalFormat.format(graphPanel.getXCoordinate()));
+        changeLabelY("y = " + decimalFormat.format(graphPanel.getYCoordinate()));
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+    }
+
 
 }
