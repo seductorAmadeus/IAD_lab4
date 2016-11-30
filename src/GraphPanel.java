@@ -68,7 +68,7 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics graph) {
-        int arcValue = (5 - radius) * 20; // change the value of the radius on the constant?
+        int arcValue = (5 - radius) * 20; // change the value of the radius on the constant, change name
         count += 1;
         step = 100 / radius;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
@@ -79,7 +79,7 @@ public class GraphPanel extends JPanel implements Runnable {
         graphic.setColor(colorOfThePlotArea);
         graphic.fillArc(ArcData.X + arcValue, ArcData.Y + arcValue, ArcData.WIDTH + arcValue * -2, ArcData.HEIGHT + arcValue * -2, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
         graphic.fillRect(RectData.X + arcValue, RectData.Y, RectData.WIDTH - arcValue, RectData.HEIGHT - arcValue);
-        graph.fillPolygon(PolygonPoints.X_POINTS, PolygonPoints.Y_POINTS, PolygonPoints.N_POINTS);
+        graph.fillPolygon(new int[]{185 + arcValue / 2, 235, 235}, new int[]{235, 235, 185 + arcValue / 2}, PolygonPoints.N_POINTS);
 
         graphic.setColor(new Color(0xFF0045));
         graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, DEFAULT_GRAPH_HEIGHT, DEFAULT_GRAPH_WIDTH / 2, 0); // Oy
