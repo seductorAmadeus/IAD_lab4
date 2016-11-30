@@ -89,7 +89,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         JCheckBox checkBox = (JCheckBox) itemEvent.getItem();
         if (checkBox.isSelected()) {
             yPoint = Double.parseDouble(checkBox.getText());
-            changeLabelY("y = " + new DecimalFormat("##0.0").format(graphPanel.getYCoordinate()));
+            changeLabelY("y = " + new DecimalFormat("##0.0").format(yPoint));
         } else {
             yPoint = 0.0;
         }
@@ -152,8 +152,8 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
     public void mouseReleased(MouseEvent mouseEvent) {
         graphPanel.setRed(0);
         graphPanel.setGreen(0);
-        graphPanel.setX(xPoint);
-        graphPanel.setY(yPoint);
+        graphPanel.setX(mouseEvent.getX());
+        graphPanel.setY(mouseEvent.getY());
         graphPanel.setFlag(true);
         graphPanel.repaint();
         /*Test action from DataPanel: */
@@ -165,8 +165,8 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
         System.out.println("____________________________________________________");
         /*end of test action*/
-        changeLabelX("x = " + new DecimalFormat("##0.0").format(graphPanel.getXCoordinate()));
-        changeLabelY("y = " + new DecimalFormat("##0.0").format(graphPanel.getYCoordinate()));
+        changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / 20));
+        changeLabelY("y = " + new DecimalFormat("##0.0").format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / 20));
         graphPanel.setFlag(false);
         startPaint(graphPanel);
     }

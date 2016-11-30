@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import javax.swing.border.Border;
 
@@ -35,6 +36,15 @@ public class MainFrame extends JFrame implements MouseListener {
         this.setLocationRelativeTo(null);
     }
 
+    public BufferedImage createImage(JPanel panel) {
+        int w = panel.getWidth();
+        int h = panel.getHeight();
+        BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = bi.createGraphics();
+        panel.paint(g);
+        return bi;
+    }
+
     private JMenuBar getjMenuBar() {
         JMenu jMenu = new JMenu("About");
         JMenuItem menuItemAbout = new JMenuItem("Author");
@@ -46,6 +56,15 @@ public class MainFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
+        Data.setBufferedImage(createImage(graphPanel));
+        int c = Data.getBufferedImage().getRGB((int) mouseEvent.getX(), mouseEvent.getY());
+        int red = (c & 0x00ff0000) >> 16;
+        int green = (c & 0x0000ff00) >> 8;
+        int blue = c & 0x000000ff;
+        Color color = new Color(red, green, blue);
+        Data.setColorOfP(color);
+        System.out.print(Data.getColorOfP());
+
         GraphPanel graphPanel = (GraphPanel) mouseEvent.getSource();
         graphPanel.setRed(0);
         graphPanel.setGreen(0);

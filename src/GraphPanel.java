@@ -62,6 +62,7 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics graph) {
+        System.out.println(x + " " + y);
         double x1, x2;
         double y1, y2;
         boolean fcolor;
@@ -75,7 +76,6 @@ public class GraphPanel extends JPanel implements Runnable {
         drawAxes(graphic);
 
         if (flag) {
-            System.out.println(x + " " + y + " step: ");
             x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / 20;
             y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / 20;
         } else {
@@ -115,6 +115,7 @@ public class GraphPanel extends JPanel implements Runnable {
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
     }
+
 
     @Override
     public void run() {
