@@ -36,7 +36,7 @@ public class MainFrame extends JFrame implements MouseListener {
         this.setLocationRelativeTo(null);
     }
 
-    public BufferedImage createImage(JPanel panel) {
+    public BufferedImage getGraphPanelScreenshot(JPanel panel) {
         int w = panel.getWidth();
         int h = panel.getHeight();
         BufferedImage bi = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
@@ -56,14 +56,15 @@ public class MainFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        Data.setBufferedImage(createImage(graphPanel));
+        // set color of pixel
+        Data.setBufferedImage(getGraphPanelScreenshot(graphPanel));
         int c = Data.getBufferedImage().getRGB((int) mouseEvent.getX(), mouseEvent.getY());
         int red = (c & 0x00ff0000) >> 16;
         int green = (c & 0x0000ff00) >> 8;
         int blue = c & 0x000000ff;
         Color color = new Color(red, green, blue);
-        Data.setColorOfP(color);
-        System.out.print(Data.getColorOfP());
+        Data.setColorOfPixel(color);
+        System.out.print(Data.getColorOfPixel());
 
         GraphPanel graphPanel = (GraphPanel) mouseEvent.getSource();
         graphPanel.setRed(0);

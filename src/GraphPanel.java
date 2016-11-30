@@ -4,6 +4,7 @@ import java.awt.*;
 public class GraphPanel extends JPanel implements Runnable {
     private final int DEFAULT_GRAPH_HEIGHT = 470;
     private final int DEFAULT_GRAPH_WIDTH = 470;
+    private final Color colorOfBlackPixel = new Color(0, 0, 0);
     private boolean flag;
     private double x, y;
     private int radius = 5;
@@ -83,10 +84,11 @@ public class GraphPanel extends JPanel implements Runnable {
             y1 = y;
         }
 
-        if (((x1 <= this.radius & x1 >= 0) & (y1 <= this.radius & y1 >= 0) &
-                ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(this.radius, 2)))) || // изменить условие для окружности
-                (x1 >= -this.radius & x1 <= 0 & y1 >= -this.radius & y1 <= 0) || // квадрат
-                ((x1 >= -(double) this.radius / 2.0) & (x1 <= 0) & (y1 <= (double) this.radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) this.radius / 2.0)))) {
+        if (colorOfBlackPixel.equals(Data.getColorOfPixel()) ||
+                ((x1 <= this.radius & x1 >= 0) & (y1 <= this.radius & y1 >= 0) &
+                        ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(this.radius, 2)))) || // изменить условие для окружности
+                        (x1 >= -this.radius & x1 <= 0 & y1 >= -this.radius & y1 <= 0) || // квадрат
+                        ((x1 >= -(double) this.radius / 2.0) & (x1 <= 0) & (y1 <= (double) this.radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) this.radius / 2.0)))) {
             graphic.setColor(new Color(0x53F22C));
             green = 1;
             fcolor = red == 1;

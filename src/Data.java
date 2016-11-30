@@ -9,7 +9,7 @@ public class Data {
     private static ArrayList<Point> points = new ArrayList<>();
     private static ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
     private static BufferedImage bufferedImage;
-    private static Color colorOfP;
+    private static Color colorOfPixel;
 
     static {
         Point[] point = new Point[]{new Point(4, 4), new Point(3, 3), new Point(2, 2), new Point(1, 1), new Point(0, 0),
@@ -17,12 +17,12 @@ public class Data {
         Collections.addAll(points, point);
     }
 
-    public static Color getColorOfP() {
-        return colorOfP;
+    public static Color getColorOfPixel() {
+        return colorOfPixel;
     }
 
-    public static void setColorOfP(Color color) {
-        colorOfP = color;
+    public static void setColorOfPixel(Color pixelColor) {
+        colorOfPixel = pixelColor;
     }
 
     public static BufferedImage getBufferedImage() {
