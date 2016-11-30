@@ -40,7 +40,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         };
 
         JComboBox<String> comboBox;
-        comboBox = addXCoordinateOnPanel();
+        comboBox = getComboBox();
         comboBox.addActionListener(actionListenerComboBox);
         comboBoxPanel.add(comboBox);
         this.add(labelChoiceX);
@@ -106,14 +106,13 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
             }
     }
 
-    private JComboBox<String> addXCoordinateOnPanel() {
-        String[] dataCoordinates = new String[Data.getCountOfCoordinates() + 1];
+    private JComboBox<String> getComboBox() {
+        String[] dataCoordinates = new String[Data.getCountOfCoordinates()];
         for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
             dataCoordinates[i] = Double.toString(Data.getX(i));
         }
-        dataCoordinates[Data.getCountOfCoordinates()] = "";
         JComboBox<String> jComboBox = new JComboBox<>(dataCoordinates);
-        jComboBox.setSelectedIndex(Data.getCountOfCoordinates());
+        jComboBox.setSelectedIndex(4); // set "0.0"
         return jComboBox;
     }
 
