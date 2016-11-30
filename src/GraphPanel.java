@@ -9,7 +9,7 @@ public class GraphPanel extends JPanel implements Runnable {
     private int radius = 5;
     private int step;
     private int green, red;
-    private int stepPast = 25;
+    private int stepPast = 20;
     private int count = 0;
     private Color colorOfThePlotArea = Color.black;
 
@@ -68,7 +68,6 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics graph) {
-        int arcValue = (5 - radius) * 20; // change the value of the radius on the constant, change name
         count += 1;
         step = 100 / radius;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
@@ -76,38 +75,15 @@ public class GraphPanel extends JPanel implements Runnable {
         super.paintComponent(graphic);
         this.setBackground(new Color(0xFF, 248, 116));
 
-        graphic.setColor(colorOfThePlotArea);
-        graphic.fillArc(ArcData.X + arcValue, ArcData.Y + arcValue, ArcData.WIDTH + arcValue * -2, ArcData.HEIGHT + arcValue * -2, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
-        graphic.fillRect(RectData.X + arcValue, RectData.Y, RectData.WIDTH - arcValue, RectData.HEIGHT - arcValue);
-        graph.fillPolygon(new int[]{185 + arcValue / 2, 235, 235}, new int[]{235, 235, 185 + arcValue / 2}, PolygonPoints.N_POINTS);
+        drawAxes(graphic);
+        drawGraphArea(graphic);
 
-        graphic.setColor(new Color(0xFF0045));
-        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, DEFAULT_GRAPH_HEIGHT, DEFAULT_GRAPH_WIDTH / 2, 0); // Oy
-        graphic.drawLine(0, DEFAULT_GRAPH_HEIGHT / 2, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2); // Ox
-        // стрелки у Ox
-        graphic.drawLine(DEFAULT_GRAPH_WIDTH - 10, DEFAULT_GRAPH_HEIGHT / 2 - 4, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
-        graphic.drawLine(DEFAULT_GRAPH_WIDTH - 10, DEFAULT_GRAPH_HEIGHT / 2 + 4, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
-        // стрелки у Oy
-        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, 0, DEFAULT_GRAPH_WIDTH / 2 - 4, 10);
-        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, 0, DEFAULT_GRAPH_WIDTH / 2 + 4, 10);
-
-        graphic.drawString("0", DEFAULT_GRAPH_WIDTH / 2 + 2, DEFAULT_GRAPH_HEIGHT / 2 + 14);
-        for (int i = 10; i >= 1; i--) {
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 3);
-            graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 17);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20);//цена деления
-            graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT / 2 - i * 20 + 5);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 + 3);            //цена деления
-            graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20 + 5), DEFAULT_GRAPH_HEIGHT / 2 + 17);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - 20 * i), DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20));            //цена деления
-            graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20 - 5));
-        }
         double x1;
         double y1;
         if (flag) {
             System.out.println(x + " " + y);
-            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / stepPast;
-            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / stepPast;
+            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / step;
+            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / step;
         } else {
             x1 = x;
             y1 = y;
@@ -141,8 +117,10 @@ public class GraphPanel extends JPanel implements Runnable {
             x2 = DEFAULT_GRAPH_WIDTH / 2 + x * step;
             y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * step;
         }
+
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
+
         stepPast = step;
     }
 
@@ -183,6 +161,38 @@ public class GraphPanel extends JPanel implements Runnable {
         } catch (Exception exp) {
             exp.printStackTrace();
         }
+    }
+
+    private void drawAxes(Graphics2D graphic) {
+        graphic.setColor(new Color(0xFF0045));
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, DEFAULT_GRAPH_HEIGHT, DEFAULT_GRAPH_WIDTH / 2, 0); // Oy
+        graphic.drawLine(0, DEFAULT_GRAPH_HEIGHT / 2, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2); // Ox
+        // Ox pointer
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH - 10, DEFAULT_GRAPH_HEIGHT / 2 - 4, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH - 10, DEFAULT_GRAPH_HEIGHT / 2 + 4, DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT / 2);
+        // Oy pointer
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, 0, DEFAULT_GRAPH_WIDTH / 2 - 4, 10);
+        graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2, 0, DEFAULT_GRAPH_WIDTH / 2 + 4, 10);
+
+        graphic.drawString("0", DEFAULT_GRAPH_WIDTH / 2 + 2, DEFAULT_GRAPH_HEIGHT / 2 + 14);
+        for (int i = 10; i >= 1; i--) {
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 3);
+            graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 17);
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20);//цена деления
+            graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT / 2 - i * 20 + 5);
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 + 3);            //цена деления
+            graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20 + 5), DEFAULT_GRAPH_HEIGHT / 2 + 17);
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - 20 * i), DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20));            //цена деления
+            graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20 - 5));
+        }
+    }
+
+    private void drawGraphArea(Graphics2D graphic) {
+        int arcValue = (5 - radius) * 20; // change the value of the radius on the constant, change name
+        graphic.setColor(colorOfThePlotArea);
+        graphic.fillArc(ArcData.X + arcValue, ArcData.Y + arcValue, ArcData.WIDTH + arcValue * -2, ArcData.HEIGHT + arcValue * -2, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
+        graphic.fillRect(RectData.X + arcValue, RectData.Y, RectData.WIDTH - arcValue, RectData.HEIGHT - arcValue);
+        graphic.fillPolygon(new int[]{PolygonPoints.X_POINTS[0] + arcValue / 2, PolygonPoints.X_POINTS[1], PolygonPoints.X_POINTS[2]}, new int[]{PolygonPoints.Y_POINTS[0], PolygonPoints.Y_POINTS[1], PolygonPoints.Y_POINTS[2] + arcValue / 2}, PolygonPoints.N_POINTS);
     }
 
     private void begin() {
