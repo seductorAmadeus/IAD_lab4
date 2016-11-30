@@ -68,6 +68,9 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     protected void paintComponent(Graphics graph) {
+        double x1, x2;
+        double y1, y2;
+        boolean fcolor;
         count += 1;
         step = 100 / radius;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
@@ -75,20 +78,18 @@ public class GraphPanel extends JPanel implements Runnable {
         super.paintComponent(graphic);
         this.setBackground(new Color(0xFF, 248, 116));
 
-        drawAxes(graphic);
         drawGraphArea(graphic);
+        drawAxes(graphic);
 
-        double x1;
-        double y1;
         if (flag) {
-            System.out.println(x + " " + y);
-            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / step;
-            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / step;
+            System.out.println(x + " " + y + " step: " + step);
+            x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / 20;
+            y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / 20;
         } else {
             x1 = x;
             y1 = y;
         }
-        boolean fcolor;
+
         if (((x1 <= this.radius & x1 >= 0) & (y1 <= this.radius & y1 >= 0) &
                 ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(this.radius, 2)))) || // изменить условие для окружности
                 (x1 >= -this.radius & x1 <= 0 & y1 >= -this.radius & y1 <= 0) || // квадрат
@@ -103,19 +104,19 @@ public class GraphPanel extends JPanel implements Runnable {
             fcolor = green == 1;
             green = 0;
         }
+
         if (fcolor) {
             begin();
         }
-        double x2;
-        double y2;
+
         if (flag) {
-            x2 = x1 * step + DEFAULT_GRAPH_WIDTH / 2;
-            y2 = -y1 * step + DEFAULT_GRAPH_HEIGHT / 2;
+            x2 = x1 * 20 + DEFAULT_GRAPH_WIDTH / 2;
+            y2 = -y1 * 20 + DEFAULT_GRAPH_HEIGHT / 2;
             x = x2;
             y = y2;
         } else {
-            x2 = DEFAULT_GRAPH_WIDTH / 2 + x * step;
-            y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * step;
+            x2 = DEFAULT_GRAPH_WIDTH / 2 + x * 20;
+            y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * 20;
         }
 
         if (count > 2)
@@ -126,7 +127,7 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-        try {
+      /*  try {
             for (int i = 0; i <= 245; i = i + 1) {
                 colorOfThePlotArea = new Color(0, i, 255);
                 repaint();
@@ -160,7 +161,7 @@ public class GraphPanel extends JPanel implements Runnable {
             }
         } catch (Exception exp) {
             exp.printStackTrace();
-        }
+        }*/
     }
 
     private void drawAxes(Graphics2D graphic) {

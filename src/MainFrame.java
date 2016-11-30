@@ -63,8 +63,8 @@ public class MainFrame extends JFrame implements MouseListener {
         System.out.println("graphPanel.step = " + graphPanel.getStep());
         System.out.println("____________________________________________________");
         /*end of test action*/
-        dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / graphPanel.getStep()));
-        dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / graphPanel.getStep()));
+        dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / 20));
+        dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / 20));
     }
 
     @Override
