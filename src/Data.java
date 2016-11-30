@@ -9,8 +9,8 @@ public class Data {
     private static JComboBox<String> comboBox = new JComboBox<>();
 
     static {
-        Point[] point = new Point[]{new Point(3, -3), new Point(-3, 0), new Point(-1, 2), new Point(-4, 5), new Point(1, 2),
-                new Point(0, 0), new Point(-1, 4), new Point(-4, 5), new Point(3, 3)};
+        Point[] point = new Point[]{new Point(4, 4), new Point(3, 3), new Point(2, 2), new Point(1, 1), new Point(0, 0),
+                new Point(-1, -1), new Point(-2, -2), new Point(-3, -3), new Point(-4, -4)};
         Collections.addAll(points, point);
     }
 
