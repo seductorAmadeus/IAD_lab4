@@ -60,7 +60,6 @@ public class MainFrame extends JFrame implements MouseListener {
         System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
         System.out.println("graphPanel.GraphWidth = " + graphPanel.getGraphWidth());
         System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
-        System.out.println("graphPanel.step = " + graphPanel.getStep());
         System.out.println("____________________________________________________");
         /*end of test action*/
         dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / 20));

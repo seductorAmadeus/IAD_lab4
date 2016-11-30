@@ -7,9 +7,7 @@ public class GraphPanel extends JPanel implements Runnable {
     private boolean flag;
     private double x, y;
     private int radius = 5;
-    private int step;
     private int green, red;
-    private int stepPast = 20;
     private int count = 0;
     private Color colorOfThePlotArea = Color.black;
 
@@ -46,10 +44,6 @@ public class GraphPanel extends JPanel implements Runnable {
         return DEFAULT_GRAPH_WIDTH;
     }
 
-    public int getStep() {
-        return step;
-    }
-
     public void setGreen(int green) {
         this.green = green;
     }
@@ -72,7 +66,6 @@ public class GraphPanel extends JPanel implements Runnable {
         double y1, y2;
         boolean fcolor;
         count += 1;
-        step = 100 / radius;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
         Graphics2D graphic = (Graphics2D) graph;
         super.paintComponent(graphic);
@@ -82,7 +75,7 @@ public class GraphPanel extends JPanel implements Runnable {
         drawAxes(graphic);
 
         if (flag) {
-            System.out.println(x + " " + y + " step: " + step);
+            System.out.println(x + " " + y + " step: ");
             x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / 20;
             y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / 20;
         } else {
@@ -121,8 +114,6 @@ public class GraphPanel extends JPanel implements Runnable {
 
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
-
-        stepPast = step;
     }
 
     @Override
