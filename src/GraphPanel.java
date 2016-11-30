@@ -78,7 +78,7 @@ public class GraphPanel extends JPanel implements Runnable {
 
         graphic.setColor(colorOfThePlotArea);
         graphic.fillArc(ArcData.X + arcValue, ArcData.Y + arcValue, ArcData.WIDTH + arcValue * -2, ArcData.HEIGHT + arcValue * -2, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
-        graphic.fillRect(RectData.X, RectData.Y, RectData.WIDTH, RectData.HEIGHT);
+        graphic.fillRect(RectData.X + arcValue, RectData.Y, RectData.WIDTH - arcValue, RectData.HEIGHT - arcValue);
         graph.fillPolygon(PolygonPoints.X_POINTS, PolygonPoints.Y_POINTS, PolygonPoints.N_POINTS);
 
         graphic.setColor(new Color(0xFF0045));
