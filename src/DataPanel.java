@@ -72,7 +72,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
     }
 
     private JSpinner getSpinner() {
-        SpinnerModel spinnerModel = new SpinnerNumberModel(4, 1, 10, 1);
+        SpinnerModel spinnerModel = new SpinnerNumberModel(5, 1, 10, 1);
         JSpinner spinner = new JSpinner(spinnerModel);
         // forbid spinner editing.
         JTextField tempTextField = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
@@ -141,7 +141,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-
     }
 
     @Override
