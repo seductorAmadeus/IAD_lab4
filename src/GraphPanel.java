@@ -101,7 +101,7 @@ public class GraphPanel extends JPanel implements Runnable {
         }
 
         if (fcolor) {
-            begin();
+            new Thread(this).start();
         }
 
         if (flag) {
@@ -121,7 +121,7 @@ public class GraphPanel extends JPanel implements Runnable {
 
     @Override
     public void run() {
-      /*  try {
+        try {
             for (int i = 0; i <= 245; i = i + 1) {
                 colorOfThePlotArea = new Color(0, i, 255);
                 repaint();
@@ -155,7 +155,7 @@ public class GraphPanel extends JPanel implements Runnable {
             }
         } catch (Exception exp) {
             exp.printStackTrace();
-        }*/
+        }
     }
 
     private void drawAxes(Graphics2D graphic) {
@@ -188,10 +188,6 @@ public class GraphPanel extends JPanel implements Runnable {
         graphic.fillArc(ArcData.X + arcValue, ArcData.Y + arcValue, ArcData.WIDTH + arcValue * -2, ArcData.HEIGHT + arcValue * -2, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
         graphic.fillRect(RectData.X + arcValue, RectData.Y, RectData.WIDTH - arcValue, RectData.HEIGHT - arcValue);
         graphic.fillPolygon(new int[]{PolygonPoints.X_POINTS[0] + arcValue / 2, PolygonPoints.X_POINTS[1], PolygonPoints.X_POINTS[2]}, new int[]{PolygonPoints.Y_POINTS[0], PolygonPoints.Y_POINTS[1], PolygonPoints.Y_POINTS[2] + arcValue / 2}, PolygonPoints.N_POINTS);
-    }
-
-    private void begin() {
-        new Thread(this).start();
     }
 
 }
