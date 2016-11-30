@@ -79,9 +79,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         tempTextField.setEditable(false);
         spinner.addChangeListener(event -> {
             graphPanel.setRadius((int) ((JSpinner) event.getSource()).getValue());
-            if (!graphPanel.getFlag()) {
-                graphPanel.setY((int) yPoint);
-            }
             graphPanel.repaint();
         });
         return spinner;
