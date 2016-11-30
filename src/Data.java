@@ -6,7 +6,6 @@ public class Data {
 
     private static ArrayList<Point> points = new ArrayList<>();
     private static ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
-    private static JComboBox<String> comboBox = new JComboBox<>();
 
     static {
         Point[] point = new Point[]{new Point(4, 4), new Point(3, 3), new Point(2, 2), new Point(1, 1), new Point(0, 0),
