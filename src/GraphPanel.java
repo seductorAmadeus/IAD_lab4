@@ -57,6 +57,9 @@ public class GraphPanel extends JPanel {
         return x;
     }
 
+    public int getRadius() {
+        return radius;
+    }
     public double getYCoordinate() {
         return y;
     }
@@ -115,6 +118,7 @@ public class GraphPanel extends JPanel {
             Thread animation = new Thread(() -> {
                 Data.getSpinner().setEnabled(false);
                 Data.getButton().setEnabled(false);
+
                 try {
                     for (int i = 0, j = 0, k = 0;
                          (i != 255) && (j != 245) && (k != 255);
@@ -177,7 +181,7 @@ public class GraphPanel extends JPanel {
     }
 
     private void drawGraphArea(Graphics2D graphic) {
-        int arcValue = (5 - radius) * 20; // change the value of the radius on the constant, change name
+        int arcValue = (5 - radius) * 20; // change the value of the radius on the constant
         graphic.setColor(colorOfThePlotArea);
         graphic.fillArc(ArcData.X + arcValue, ArcData.Y + arcValue, ArcData.WIDTH + arcValue * -2, ArcData.HEIGHT + arcValue * -2, ArcData.START_ANGLE, ArcData.ARC_ANGLE);
         graphic.fillRect(RectData.X + arcValue, RectData.Y, RectData.WIDTH - arcValue, RectData.HEIGHT - arcValue);

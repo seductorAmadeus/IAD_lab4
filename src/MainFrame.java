@@ -13,17 +13,16 @@ public class MainFrame extends JFrame implements MouseListener {
     MainFrame() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        // add a panels to the main panel
         graphPanel = new GraphPanel();
         mainPanel.add(graphPanel, BorderLayout.EAST);
         dataPanel = new DataPanel(graphPanel);
         mainPanel.add(dataPanel, BorderLayout.WEST);
         graphPanel.addMouseListener(this);
-        // add a borders for display panels
+       /* // add a borders for display panels
         Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
         dataPanel.setBorder(etched);
         mainPanel.setBorder(etched);
-        graphPanel.setBorder(etched);
+        graphPanel.setBorder(etched);*/
         // add menu
         this.setJMenuBar(getjMenuBar());
         // add the main panel on the frame

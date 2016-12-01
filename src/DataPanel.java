@@ -91,7 +91,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         JCheckBox checkBox = (JCheckBox) itemEvent.getItem();
         if (checkBox.isSelected()) {
             yPoint = Double.parseDouble(checkBox.getText());
-            changeLabelY("y = " + new DecimalFormat("##0.0").format(yPoint));
         } else {
             yPoint = 0.0;
         }
@@ -103,6 +102,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
             for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
                 Data.getCheckBox(i).setEnabled(true);
             }
+        System.out.print(121);
     }
 
     private JComboBox<String> getComboBox() {
@@ -154,21 +154,12 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
     public void mouseReleased(MouseEvent mouseEvent) {
         graphPanel.setRed(0);
         graphPanel.setGreen(0);
-        graphPanel.setX(mouseEvent.getX());
-        graphPanel.setY(mouseEvent.getY());
+        graphPanel.setX(xPoint);
+        graphPanel.setY(yPoint);
         graphPanel.setFlag(true);
         graphPanel.repaint();
-        /*Test action from DataPanel: */
-        System.out.println("____________________________________________________");
-        System.out.println("Test action from DataPanel: ");
-        System.out.println("graphPanel.x = " + graphPanel.getXCoordinate());
-        System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
-        System.out.println("graphPanel.GraphWidth = " + graphPanel.getGraphWidth());
-        System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
-        System.out.println("____________________________________________________");
-        /*end of test action*/
-        changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / 20));
-        changeLabelY("y = " + new DecimalFormat("##0.0").format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / 20));
+        changeLabelX("x = " + xPoint);
+        changeLabelY("y = " + yPoint);
         graphPanel.setFlag(false);
         startPaint(graphPanel);
     }
