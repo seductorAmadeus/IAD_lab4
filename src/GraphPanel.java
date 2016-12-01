@@ -116,41 +116,27 @@ public class GraphPanel extends JPanel {
                 Data.getSpinner().setEnabled(false);
                 Data.getButton().setEnabled(false);
                 try {
-                    for (int i = 0; i <= 245; i++) {
-                        colorOfThePlotArea = new Color(0, 0, i);
+                    for (int i = 0, j = 0, k = 0;
+                         (i != 255) && (j != 245) && (k != 255);
+                         i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
+                        colorOfThePlotArea = new Color(i, j, k);
                         repaint();
-                        Thread.sleep(5);
-                    }
-                    for (int i = 0; i <= 245; i++) {
-                        colorOfThePlotArea = new Color(0, i, 255);
-                        repaint();
-                        Thread.sleep(5);
-                    }
-                    for (int i = 0; i <= 245; i++) {
-                        colorOfThePlotArea = new Color(i, 245, 255);
-                        repaint();
-                        System.out.println("2");
-                        Thread.sleep(5);
+                        Thread.sleep(30);
                     }
                     for (int i = 255; i >= 220; i--) {
                         colorOfThePlotArea = new Color(i, 245, 255);
                         repaint();
                         Thread.sleep(100);
                     }
-                    for (int i = 220; i >= 0; i--) {
-                        colorOfThePlotArea = new Color(i, 245, 255);
+                    for (int i = 220, j = 255, k = 255;
+                         (i >= 0) || (j >= 0) || (k >= 0);
+                         i = (i - 1 >= 0) ? i - 1 : 0, j = (j - 1 >= 0) ? j - 1 : 0, k = (k - 1 >= 0) ? k - 1 : 0) {
+                        colorOfThePlotArea = new Color(i, j, k);
                         repaint();
-                        Thread.sleep(5);
-                    }
-                    for (int i = 245; i >= 0; i--) {
-                        colorOfThePlotArea = new Color(0, i, 255);
-                        repaint();
-                        Thread.sleep(5);
-                    }
-                    for (int i = 255; i >= 0; i--) {
-                        colorOfThePlotArea = new Color(0, 0, i);
-                        repaint();
-                        Thread.sleep(5);
+                        Thread.sleep(30);
+                        if (i == 0 && k == 0 && j == 0) {
+                            break;
+                        }
                     }
                 } catch (Exception exp) {
                     exp.printStackTrace();
