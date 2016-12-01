@@ -57,6 +57,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         button.setMargin(new Insets(30, 40, 30, 40));
         button.addActionListener(this);
         button.addMouseListener(this);
+        Data.setButton(button);
         // add the spacer on the data panel
         this.add(Box.createVerticalStrut(20));
         this.add(button);
@@ -81,6 +82,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
             graphPanel.setRadius((int) ((JSpinner) event.getSource()).getValue());
             graphPanel.repaint();
         });
+        Data.setSpinner(spinner);
         return spinner;
     }
 

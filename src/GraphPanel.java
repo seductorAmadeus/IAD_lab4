@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class GraphPanel extends JPanel implements Runnable {
+public class GraphPanel extends JPanel {
     private final int DEFAULT_GRAPH_HEIGHT = 470;
     private final int DEFAULT_GRAPH_WIDTH = 470;
     private final Color colorOfBlackPixel = new Color(0, 0, 0);
@@ -66,7 +66,7 @@ public class GraphPanel extends JPanel implements Runnable {
         System.out.println(x + " " + y);
         double x1, x2;
         double y1, y2;
-        boolean fcolor;
+        boolean pointBelogns;
         count += 1;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
         Graphics2D graphic = (Graphics2D) graph;
@@ -86,24 +86,19 @@ public class GraphPanel extends JPanel implements Runnable {
 
         if (colorOfBlackPixel.equals(Data.getColorOfPixel()) ||
                 ((x1 <= this.radius & x1 >= 0) & (y1 <= this.radius & y1 >= 0) &
-                        ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(this.radius, 2)))) || // изменить условие для окружности
-                        (x1 >= -this.radius & x1 <= 0 & y1 >= -this.radius & y1 <= 0) || // квадрат
+                        ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(this.radius, 2)))) ||
+                        (x1 >= -this.radius & x1 <= 0 & y1 >= -this.radius & y1 <= 0) ||
                         ((x1 >= -(double) this.radius / 2.0) & (x1 <= 0) & (y1 <= (double) this.radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) this.radius / 2.0)))) {
             graphic.setColor(new Color(0x53F22C));
             green = 1;
-            fcolor = red == 1;
+            pointBelogns = red == 1;
             red = 0;
         } else {
             graphic.setColor(Color.red);
             red = 1;
-            fcolor = green == 1;
+            pointBelogns = green == 1;
             green = 0;
         }
-
-        if (fcolor) {
-            new Thread(this).start();
-        }
-
         if (flag) {
             x2 = x1 * 20 + DEFAULT_GRAPH_WIDTH / 2;
             y2 = -y1 * 20 + DEFAULT_GRAPH_HEIGHT / 2;
@@ -116,46 +111,58 @@ public class GraphPanel extends JPanel implements Runnable {
 
         if (count > 2)
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
-    }
-
-
-    @Override
-    public void run() {
-        try {
-            for (int i = 0; i <= 245; i = i + 1) {
-                colorOfThePlotArea = new Color(0, i, 255);
-                repaint();
-                Thread.sleep(5);
-            }
-            for (int i = 0; i <= 245; i++) {
-                colorOfThePlotArea = new Color(i, 245, 255);
-                repaint();
-                Thread.sleep(5);
-            }
-            for (int i = 255; i >= 220; i--) {
-                colorOfThePlotArea = new Color(245, 245, i);
-                repaint();
-                Thread.sleep(5);
-            }
-            Thread.sleep(200);
-            for (int i = 220; i <= 255; i++) {
-                colorOfThePlotArea = new Color(245, 245, i);
-                repaint();
-                Thread.sleep(10);
-            }
-            for (int i = 245; i >= 0; i--) {
-                colorOfThePlotArea = new Color(i, 245, 255);
-                repaint();
-                Thread.sleep(5);
-            }
-            for (int i = 245; i >= 0; i--) {
-                colorOfThePlotArea = new Color(0, i, 255);
-                repaint();
-                Thread.sleep(10);
-            }
-        } catch (Exception exp) {
-            exp.printStackTrace();
+        if (pointBelogns) {
+            Thread animation = new Thread(() -> {
+                Data.getSpinner().setEnabled(false);
+                Data.getButton().setEnabled(false);
+                try {
+                    for (int i = 0; i <= 245; i++) {
+                        colorOfThePlotArea = new Color(0, 0, i);
+                        repaint();
+                        Thread.sleep(5);
+                    }
+                    for (int i = 0; i <= 245; i++) {
+                        colorOfThePlotArea = new Color(0, i, 255);
+                        repaint();
+                        Thread.sleep(5);
+                    }
+                    for (int i = 0; i <= 245; i++) {
+                        colorOfThePlotArea = new Color(i, 245, 255);
+                        repaint();
+                        System.out.println("2");
+                        Thread.sleep(5);
+                    }
+                    for (int i = 255; i >= 220; i--) {
+                        colorOfThePlotArea = new Color(i, 245, 255);
+                        repaint();
+                        Thread.sleep(100);
+                    }
+                    for (int i = 220; i >= 0; i--) {
+                        colorOfThePlotArea = new Color(i, 245, 255);
+                        repaint();
+                        Thread.sleep(5);
+                    }
+                    for (int i = 245; i >= 0; i--) {
+                        colorOfThePlotArea = new Color(0, i, 255);
+                        repaint();
+                        Thread.sleep(5);
+                    }
+                    for (int i = 255; i >= 0; i--) {
+                        colorOfThePlotArea = new Color(0, 0, i);
+                        repaint();
+                        Thread.sleep(5);
+                    }
+                } catch (Exception exp) {
+                    exp.printStackTrace();
+                } finally {
+                    Data.getSpinner().setEnabled(true);
+                    Data.getButton().setEnabled(true);
+                }
+            });
+            animation.setDaemon(true);
+            animation.start();
         }
+
     }
 
     private void drawAxes(Graphics2D graphic) {
@@ -173,11 +180,12 @@ public class GraphPanel extends JPanel implements Runnable {
         for (int i = 10; i >= 1; i--) {
             graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 3);
             graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 17);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20);//цена деления
+            //value of division
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20);
             graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT / 2 - i * 20 + 5);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 + 3);            //цена деления
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 + 3);
             graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20 + 5), DEFAULT_GRAPH_HEIGHT / 2 + 17);
-            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - 20 * i), DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20));            //цена деления
+            graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - 20 * i), DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20));
             graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT - (DEFAULT_GRAPH_HEIGHT / 2 - i * 20 - 5));
         }
     }

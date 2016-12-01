@@ -6,6 +6,8 @@ import java.util.Collections;
 
 public class Data {
 
+    private static JSpinner spinner;
+    private static JButton button;
     private static ArrayList<Point> points = new ArrayList<>();
     private static ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
     private static BufferedImage bufferedImage;
@@ -51,5 +53,21 @@ public class Data {
 
     public static int getCountOfCoordinates() {
         return points.size();
+    }
+
+    public static JSpinner getSpinner() {
+        return spinner;
+    }
+
+    public static void setSpinner(JSpinner spinner) {
+        Data.spinner = spinner;
+    }
+
+    public static JButton getButton() {
+        return button;
+    }
+
+    public static void setButton(JButton button) {
+        Data.button = button;
     }
 }
