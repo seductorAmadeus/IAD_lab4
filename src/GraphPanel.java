@@ -1,5 +1,8 @@
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GraphPanel extends JPanel {
     private final int DEFAULT_GRAPH_HEIGHT = 470;
@@ -60,6 +63,7 @@ public class GraphPanel extends JPanel {
     public int getRadius() {
         return radius;
     }
+
     public double getYCoordinate() {
         return y;
     }
@@ -69,7 +73,7 @@ public class GraphPanel extends JPanel {
         System.out.println(x + " " + y);
         double x1, x2;
         double y1, y2;
-        boolean pointBelogns;
+        boolean pointBelongs;
         count += 1;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
         Graphics2D graphic = (Graphics2D) graph;
@@ -94,12 +98,12 @@ public class GraphPanel extends JPanel {
                         ((x1 >= -(double) this.radius / 2.0) & (x1 <= 0) & (y1 <= (double) this.radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) this.radius / 2.0)))) {
             graphic.setColor(new Color(0x53F22C));
             green = 1;
-            pointBelogns = red == 1;
+            pointBelongs = red == 1;
             red = 0;
         } else {
             graphic.setColor(Color.red);
             red = 1;
-            pointBelogns = green == 1;
+            pointBelongs = green == 1;
             green = 0;
         }
         if (flag) {
@@ -111,14 +115,24 @@ public class GraphPanel extends JPanel {
             x2 = DEFAULT_GRAPH_WIDTH / 2 + x * 20;
             y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * 20;
         }
-
-        if (count > 2)
+            /* array list, добавлять элементы и проверять, пробегая по всему листу, есть ли точка с такими же координатами */
+        if (count > 2) {
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
-        if (pointBelogns) {
+            Data.setPointsOnGraph(new Point((float) x2 - 2, (float) y2 - 2));
+            ArrayList<Point> copyArrayList = Data.getPointsOnGraph();
+            Iterator<Point> iterator = copyArrayList.iterator();
+
+            do {
+                Point point = iterator.next();
+                System.out.println(point.toString());
+                graphic.fillOval((int) point.getX(), (int) point.getY(), 4, 4);
+            } while (iterator.hasNext());
+        }
+
+        if (pointBelongs) {
             Thread animation = new Thread(() -> {
                 Data.getSpinner().setEnabled(false);
                 Data.getButton().setEnabled(false);
-
                 try {
                     for (int i = 0, j = 0, k = 0;
                          (i != 255) && (j != 245) && (k != 255);
@@ -152,7 +166,6 @@ public class GraphPanel extends JPanel {
             animation.setDaemon(true);
             animation.start();
         }
-
     }
 
     private void drawAxes(Graphics2D graphic) {
@@ -170,7 +183,7 @@ public class GraphPanel extends JPanel {
         for (int i = 10; i >= 1; i--) {
             graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 3);
             graphic.drawString("-" + i, DEFAULT_GRAPH_WIDTH / 2 - i * 20, DEFAULT_GRAPH_HEIGHT / 2 + 17);
-            //value of division
+            // value of division
             graphic.drawLine(DEFAULT_GRAPH_WIDTH / 2 - 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20, DEFAULT_GRAPH_WIDTH / 2 + 3, DEFAULT_GRAPH_HEIGHT / 2 - i * 20);
             graphic.drawString("" + i, DEFAULT_GRAPH_WIDTH / 2 + 17, DEFAULT_GRAPH_HEIGHT / 2 - i * 20 + 5);
             graphic.drawLine(DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 - 3, DEFAULT_GRAPH_WIDTH - (DEFAULT_GRAPH_WIDTH / 2 - i * 20), DEFAULT_GRAPH_HEIGHT / 2 + 3);
