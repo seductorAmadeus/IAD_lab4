@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.DecimalFormat;
 
 public class DataPanel extends JPanel implements ItemListener, ActionListener, MouseListener {
     private JLabel labelXData = new JLabel("x = 0,0");
@@ -52,15 +51,25 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         this.add(labelXData);
         this.add(labelYData);
         Font font = new Font("Arial", Font.CENTER_BASELINE, 14);
-        JButton button = new JButton("Add the point");
-        button.setFont(font);
-        button.setMargin(new Insets(30, 40, 30, 40));
-        button.addActionListener(this);
-        button.addMouseListener(this);
-        Data.setButton(button);
+        JButton addButton = new JButton("Add the point");
+        addButton.setFont(font);
+        //addButton.setMargin(new Insets(30, 40, 30, 40));
+        addButton.addActionListener(this);
+        addButton.addMouseListener(this);
+        Data.setButton(addButton);
+        JButton clearButton = new JButton("Clear graph");
+        ActionListener clearAllPoints = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        };
+        clearButton.addActionListener(clearAllPoints);
+        clearButton.setFont(font);
         // add the spacer on the data panel
         this.add(Box.createVerticalStrut(20));
-        this.add(button);
+        this.add(addButton);
+        this.add(clearButton);
         this.add(Box.createVerticalStrut(100));
     }
 
@@ -124,7 +133,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         return Data.getCheckBox(i);
     }
 
-    private void startPaint(GraphPanel graphPanel) {
+    private void startRepaint(GraphPanel graphPanel) {
         if (!graphPanel.getFlag()) {
             graphPanel.setY((int) yPoint);
             graphPanel.setX((int) xPoint);
@@ -135,7 +144,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         graphPanel.setFlag(false);
-        startPaint(graphPanel);
+        startRepaint(graphPanel);
     }
 
     @Override
@@ -161,7 +170,7 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         changeLabelX("x = " + xPoint);
         changeLabelY("y = " + yPoint);
         graphPanel.setFlag(false);
-        startPaint(graphPanel);
+        startRepaint(graphPanel);
     }
 
     @Override
