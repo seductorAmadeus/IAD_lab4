@@ -58,11 +58,8 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         addButton.addMouseListener(this);
         Data.setButton(addButton);
         JButton clearButton = new JButton("Clear graph");
-        ActionListener clearAllPoints = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        ActionListener clearAllPoints = e -> {
 
-            }
         };
         clearButton.addActionListener(clearAllPoints);
         clearButton.setFont(font);
@@ -111,7 +108,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
             for (int i = 0; i < Data.getCountOfCoordinates(); i++) {
                 Data.getCheckBox(i).setEnabled(true);
             }
-        System.out.print(121);
     }
 
     private JComboBox<String> getComboBox() {

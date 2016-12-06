@@ -1,5 +1,4 @@
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,10 +25,6 @@ public class GraphPanel extends JPanel {
 
     public void setFlag(boolean flag) {
         this.flag = flag;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
     }
 
     public void setX(double x) {
@@ -64,15 +59,17 @@ public class GraphPanel extends JPanel {
         return radius;
     }
 
+    public void setRadius(int radius) {
+        this.radius = radius;
+    }
+
     public double getYCoordinate() {
         return y;
     }
 
     @Override
     protected void paintComponent(Graphics graph) {
-        System.out.println(x + " " + y);
-        double x1, x2;
-        double y1, y2;
+        double x1, x2, y1, y2;
         boolean pointBelongs;
         count += 1;
         setSize(DEFAULT_GRAPH_WIDTH, DEFAULT_GRAPH_HEIGHT);
@@ -86,16 +83,18 @@ public class GraphPanel extends JPanel {
         if (flag) {
             x1 = (x - DEFAULT_GRAPH_WIDTH / 2) / 20;
             y1 = (-y + DEFAULT_GRAPH_HEIGHT / 2) / 20;
+            x2 = x1 * 20 + DEFAULT_GRAPH_WIDTH / 2;
+            y2 = -y1 * 20 + DEFAULT_GRAPH_HEIGHT / 2;
+            x = x2;
+            y = y2;
         } else {
             x1 = x;
             y1 = y;
+            x2 = DEFAULT_GRAPH_WIDTH / 2 + x * 20;
+            y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * 20;
         }
 
-        if (colorOfBlackPixel.equals(Data.getColorOfPixel()) ||
-                ((x1 <= this.radius & x1 >= 0) & (y1 <= this.radius & y1 >= 0) &
-                        ((Math.pow(x1, 2) + Math.pow(y1, 2) <= (Math.pow(this.radius, 2)))) ||
-                        (x1 >= -this.radius & x1 <= 0 & y1 >= -this.radius & y1 <= 0) ||
-                        ((x1 >= -(double) this.radius / 2.0) & (x1 <= 0) & (y1 <= (double) this.radius / 2.0) & (y1 >= 0) & (y1 <= x1 + (double) this.radius / 2.0)))) {
+        if (pointBelongsToTheArea(x1, y1)) {
             graphic.setColor(new Color(0x53F22C));
             green = 1;
             pointBelongs = red == 1;
@@ -106,22 +105,12 @@ public class GraphPanel extends JPanel {
             pointBelongs = green == 1;
             green = 0;
         }
-        if (flag) {
-            x2 = x1 * 20 + DEFAULT_GRAPH_WIDTH / 2;
-            y2 = -y1 * 20 + DEFAULT_GRAPH_HEIGHT / 2;
-            x = x2;
-            y = y2;
-        } else {
-            x2 = DEFAULT_GRAPH_WIDTH / 2 + x * 20;
-            y2 = (DEFAULT_GRAPH_HEIGHT / 2) - y * 20;
-        }
-            /* array list, добавлять элементы и проверять, пробегая по всему листу, есть ли точка с такими же координатами */
+
         if (count > 2) {
             graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
             Data.setPointsOnGraph(new Point((float) x2 - 2, (float) y2 - 2));
             ArrayList<Point> copyArrayList = Data.getPointsOnGraph();
             Iterator<Point> iterator = copyArrayList.iterator();
-
             do {
                 Point point = iterator.next();
                 System.out.println(point.toString());
@@ -166,6 +155,14 @@ public class GraphPanel extends JPanel {
             animation.setDaemon(true);
             animation.start();
         }
+    }
+
+    private boolean pointBelongsToTheArea(double x, double y) {
+        return colorOfBlackPixel.equals(Data.getColorOfPixel()) ||
+                ((x <= this.radius & x >= 0) & (y <= this.radius & y >= 0) &
+                        ((Math.pow(x, 2) + Math.pow(y, 2) <= (Math.pow(this.radius, 2)))) ||
+                        (x >= -this.radius & x <= 0 & y >= -this.radius & y <= 0) ||
+                        ((x >= -(double) this.radius / 2.0) & (x <= 0) & (y <= (double) this.radius / 2.0) & (y >= 0) & (y <= x + (double) this.radius / 2.0)));
     }
 
     private void drawAxes(Graphics2D graphic) {
