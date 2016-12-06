@@ -157,8 +157,6 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        graphPanel.setRed(0);
-        graphPanel.setGreen(0);
         graphPanel.setX(xPoint);
         graphPanel.setY(yPoint);
         graphPanel.setFlag(true);

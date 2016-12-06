@@ -4,7 +4,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-import javax.swing.border.Border;
 
 public class MainFrame extends JFrame implements MouseListener {
     private DataPanel dataPanel;
@@ -18,11 +17,6 @@ public class MainFrame extends JFrame implements MouseListener {
         dataPanel = new DataPanel(graphPanel);
         mainPanel.add(dataPanel, BorderLayout.WEST);
         graphPanel.addMouseListener(this);
-       /* // add a borders for display panels
-        Border etched = BorderFactory.createEtchedBorder(new Color(0xFF), new Color(0xFF719F));
-        dataPanel.setBorder(etched);
-        mainPanel.setBorder(etched);
-        graphPanel.setBorder(etched);*/
         // add menu
         this.setJMenuBar(getjMenuBar());
         // add the main panel on the frame
@@ -53,21 +47,21 @@ public class MainFrame extends JFrame implements MouseListener {
         return jMenuBar;
     }
 
+    private Color getColorOfPixel(int c) {
+        int red = (c & 0x00ff0000) >> 16;
+        int green = (c & 0x0000ff00) >> 8;
+        int blue = c & 0x000000ff;
+        return new Color(red, green, blue);
+    }
+
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
         // set color of pixel
         Data.setBufferedImage(getGraphPanelScreenshot(graphPanel));
-        int c = Data.getBufferedImage().getRGB((int) mouseEvent.getX(), mouseEvent.getY());
-        int red = (c & 0x00ff0000) >> 16;
-        int green = (c & 0x0000ff00) >> 8;
-        int blue = c & 0x000000ff;
-        Color color = new Color(red, green, blue);
-        Data.setColorOfPixel(color);
+        Data.setColorOfPixel(getColorOfPixel(Data.getBufferedImage().getRGB(mouseEvent.getX(), mouseEvent.getY())));
         System.out.print(Data.getColorOfPixel());
 
         GraphPanel graphPanel = (GraphPanel) mouseEvent.getSource();
-        graphPanel.setRed(0);
-        graphPanel.setGreen(0);
         graphPanel.setX(mouseEvent.getX());
         graphPanel.setY(mouseEvent.getY());
         graphPanel.setFlag(true);

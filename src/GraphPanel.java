@@ -10,7 +10,6 @@ public class GraphPanel extends JPanel {
     private boolean flag;
     private double x, y;
     private int radius = 5;
-    private int green, red;
     private int count = 0;
     private Color colorOfThePlotArea = Color.black;
 
@@ -41,14 +40,6 @@ public class GraphPanel extends JPanel {
 
     public int getGraphWidth() {
         return DEFAULT_GRAPH_WIDTH;
-    }
-
-    public void setGreen(int green) {
-        this.green = green;
-    }
-
-    public void setRed(int red) {
-        this.red = red;
     }
 
     public double getXCoordinate() {
@@ -96,24 +87,20 @@ public class GraphPanel extends JPanel {
 
         if (pointBelongsToTheArea(x1, y1)) {
             graphic.setColor(new Color(0x53F22C));
-            green = 1;
-            pointBelongs = red == 1;
-            red = 0;
+            pointBelongs = true;
         } else {
             graphic.setColor(Color.red);
-            red = 1;
-            pointBelongs = green == 1;
-            green = 0;
+            pointBelongs = false;
         }
 
         if (count > 2) {
-            graphic.fillOval((int) x2 - 2, (int) y2 - 2, 4, 4);
             Data.setPointsOnGraph(new Point((float) x2 - 2, (float) y2 - 2));
             ArrayList<Point> copyArrayList = Data.getPointsOnGraph();
             Iterator<Point> iterator = copyArrayList.iterator();
             do {
                 Point point = iterator.next();
                 System.out.println(point.toString());
+                graphic.setColor(pointBelongsToTheArea((double) point.getX(), (double) point.getY()) ? new Color(0x53F22C) : Color.red);
                 graphic.fillOval((int) point.getX(), (int) point.getY(), 4, 4);
             } while (iterator.hasNext());
         }
