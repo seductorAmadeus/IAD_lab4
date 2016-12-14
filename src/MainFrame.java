@@ -12,11 +12,14 @@ public class MainFrame extends JFrame implements MouseListener {
     MainFrame() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        graphPanel = new GraphPanel();
+        /*graphPanel = new GraphPanel();
         mainPanel.add(graphPanel, BorderLayout.EAST);
+        */
+        ClickableCanvas clickableCanvas = new ClickableCanvas();
+        mainPanel.add(clickableCanvas, BorderLayout.EAST);
         dataPanel = new DataPanel(graphPanel);
         mainPanel.add(dataPanel, BorderLayout.WEST);
-        graphPanel.addMouseListener(this);
+        //graphPanel.addMouseListener(this);
         // add menu
         this.setJMenuBar(getjMenuBar());
         // add the main panel on the frame

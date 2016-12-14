@@ -12,6 +12,7 @@ public class GraphPanel extends JPanel {
     private int radius = 5;
     private int count = 0;
     private Color colorOfThePlotArea = Color.black;
+    private volatile ArrayList<Point> copyArrayList;
 
     GraphPanel() {
         this.setPreferredSize(new Dimension(470, 260));
@@ -87,15 +88,17 @@ public class GraphPanel extends JPanel {
 
         if (pointBelongsToTheArea(x1, y1)) {
             graphic.setColor(new Color(0x53F22C));
-            pointBelongs = true;
+            pointBelongs = false;
         } else {
             graphic.setColor(Color.red);
             pointBelongs = false;
         }
+        /* сохранять цвет точки зеленый или красный. и перерисовывать его.
+        */
 
         if (count > 2) {
-            Data.setPointsOnGraph(new Point((float) x2 - 2, (float) y2 - 2));
-            ArrayList<Point> copyArrayList = Data.getPointsOnGraph();
+            Data.setPointsOnGraph(new Point((float) x2 - 2, (float) y2 - 2, Color.red));
+            copyArrayList = Data.getPointsOnGraph();
             Iterator<Point> iterator = copyArrayList.iterator();
             do {
                 Point point = iterator.next();
@@ -105,7 +108,7 @@ public class GraphPanel extends JPanel {
             } while (iterator.hasNext());
         }
 
-        if (pointBelongs) {
+        if (pointBelongsToTheArea(x1, y1) && (count > 10)) {
             Thread animation = new Thread(() -> {
                 Data.getSpinner().setEnabled(false);
                 Data.getButton().setEnabled(false);
@@ -115,7 +118,7 @@ public class GraphPanel extends JPanel {
                          i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
                         colorOfThePlotArea = new Color(i, j, k);
                         repaint();
-                        Thread.sleep(30);
+                        Thread.sleep(100);
                     }
                     for (int i = 255; i >= 220; i--) {
                         colorOfThePlotArea = new Color(i, 245, 255);
