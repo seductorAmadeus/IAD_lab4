@@ -12,14 +12,16 @@ public class MainFrame extends JFrame implements MouseListener {
     MainFrame() {
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
-        /*graphPanel = new GraphPanel();
-        mainPanel.add(graphPanel, BorderLayout.EAST);
-        */
-        ClickableCanvas clickableCanvas = new ClickableCanvas();
-        mainPanel.add(clickableCanvas, BorderLayout.EAST);
+
+        graphPanel = new GraphPanel();
         dataPanel = new DataPanel(graphPanel);
         mainPanel.add(dataPanel, BorderLayout.WEST);
-        //graphPanel.addMouseListener(this);
+
+        graphPanel.addMouseListener(this);
+        graphPanel.EventSpinner(Data.getSpinner());
+
+        mainPanel.add(graphPanel, BorderLayout.EAST);
+        mainPanel.add(dataPanel, BorderLayout.WEST);
         // add menu
         this.setJMenuBar(getjMenuBar());
         // add the main panel on the frame
@@ -62,24 +64,12 @@ public class MainFrame extends JFrame implements MouseListener {
         // set color of pixel
         Data.setBufferedImage(getGraphPanelScreenshot(graphPanel));
         Data.setColorOfPixel(getColorOfPixel(Data.getBufferedImage().getRGB(mouseEvent.getX(), mouseEvent.getY())));
+        // test action
         System.out.print(Data.getColorOfPixel());
 
-        GraphPanel graphPanel = (GraphPanel) mouseEvent.getSource();
-        graphPanel.setX(mouseEvent.getX());
-        graphPanel.setY(mouseEvent.getY());
-        graphPanel.setFlag(true);
-        graphPanel.repaint();
-        /*Test action from MainFrame: */
-        System.out.println("____________________________________________________");
-        System.out.println("Test action from MainFrame: ");
-        System.out.println("graphPanel.x = " + graphPanel.getXCoordinate());
-        System.out.println("graphPanel.y = " + graphPanel.getYCoordinate());
-        System.out.println("graphPanel.GraphWidth = " + graphPanel.getGraphWidth());
-        System.out.println("graphPanel.GraphHeight = " + graphPanel.getGraphHeight());
-        System.out.println("____________________________________________________");
-        /*end of test action*/
-        dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((graphPanel.getXCoordinate() - graphPanel.getGraphWidth() / 2) / 20));
-        dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(graphPanel.getYCoordinate() - graphPanel.getGraphHeight() / 2) / 20));
+        graphPanel.addPointCoordinates(mouseEvent.getX(), mouseEvent.getY());
+        dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((mouseEvent.getX() - graphPanel.getWidth() / 2) / graphPanel.getStepX()));
+        dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(mouseEvent.getY() - graphPanel.getHeight() / 2) / graphPanel.getStepY()));
     }
 
     @Override

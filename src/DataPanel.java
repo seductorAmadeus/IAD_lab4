@@ -1,13 +1,16 @@
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
-public class DataPanel extends JPanel implements ItemListener, ActionListener, MouseListener {
+public class DataPanel extends JPanel implements ItemListener, ChangeListener, ActionListener, MouseListener {
     private JLabel labelXData = new JLabel("x = 0,0");
     private JLabel labelYData = new JLabel("y = 0,0");
     private GraphPanel graphPanel;
     private double yPoint;
     private double xPoint;
+    private JSpinner valueR;
 
     DataPanel(GraphPanel graphPanel) {
         this.graphPanel = graphPanel;
@@ -47,13 +50,12 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         this.add(new JLabel("Choose the Y-coordinate of a point:"));
         this.add(checkBoxPanel);
         this.add(new JLabel("Choose the value of a radius:"));
-        this.add(getSpinner());
+        this.add(SpinnerInitialize());
         this.add(labelXData);
         this.add(labelYData);
         Font font = new Font("Arial", Font.CENTER_BASELINE, 14);
         JButton addButton = new JButton("Add the point");
         addButton.setFont(font);
-        //addButton.setMargin(new Insets(30, 40, 30, 40));
         addButton.addActionListener(this);
         addButton.addMouseListener(this);
         Data.setButton(addButton);
@@ -78,18 +80,18 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         labelYData.setText(text);
     }
 
-    private JSpinner getSpinner() {
-        SpinnerModel spinnerModel = new SpinnerNumberModel(5, 1, 10, 1);
-        JSpinner spinner = new JSpinner(spinnerModel);
-        // forbid spinner editing.
-        JTextField tempTextField = ((JSpinner.DefaultEditor) spinner.getEditor()).getTextField();
-        tempTextField.setEditable(false);
-        spinner.addChangeListener(event -> {
-            graphPanel.setRadius((int) ((JSpinner) event.getSource()).getValue());
-            graphPanel.repaint();
-        });
-        Data.setSpinner(spinner);
-        return spinner;
+    private JPanel SpinnerInitialize() {
+        JPanel SpinnerBox = new JPanel(new GridLayout(1, 2));
+        valueR = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
+        valueR.addChangeListener(this);
+        SpinnerBox.add(valueR);
+        Data.setSpinner(valueR);
+        return SpinnerBox;
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent changeEvent) {
+        graphPanel.EventSpinner(valueR);
     }
 
     @Override
@@ -129,18 +131,10 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
         return Data.getCheckBox(i);
     }
 
-    private void startRepaint(GraphPanel graphPanel) {
-        if (!graphPanel.getFlag()) {
-            graphPanel.setY((int) yPoint);
-            graphPanel.setX((int) xPoint);
-        }
-        graphPanel.repaint();
-    }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
-        graphPanel.setFlag(false);
-        startRepaint(graphPanel);
+        graphPanel.repaint();
     }
 
     @Override
@@ -157,14 +151,9 @@ public class DataPanel extends JPanel implements ItemListener, ActionListener, M
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
-        graphPanel.setX(xPoint);
-        graphPanel.setY(yPoint);
-        graphPanel.setFlag(true);
         graphPanel.repaint();
         changeLabelX("x = " + xPoint);
         changeLabelY("y = " + yPoint);
-        graphPanel.setFlag(false);
-        startRepaint(graphPanel);
     }
 
     @Override
