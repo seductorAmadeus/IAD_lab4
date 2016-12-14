@@ -59,16 +59,10 @@ public class DataPanel extends JPanel implements ItemListener, ChangeListener, A
         addButton.addActionListener(this);
         addButton.addMouseListener(this);
         Data.setButton(addButton);
-        JButton clearButton = new JButton("Clear graph");
-        ActionListener clearAllPoints = e -> {
-
-        };
-        clearButton.addActionListener(clearAllPoints);
-        clearButton.setFont(font);
+        addButton.setMargin(new Insets(30, 40, 30, 40));
         // add the spacer on the data panel
         this.add(Box.createVerticalStrut(20));
         this.add(addButton);
-        this.add(clearButton);
         this.add(Box.createVerticalStrut(100));
     }
 

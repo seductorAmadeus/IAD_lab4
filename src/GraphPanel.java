@@ -117,7 +117,6 @@ public class GraphPanel extends JPanel {
                 graphic.setColor(Color.red);
                 graphic.fillRect((int) real.get().getX(), (int) real.get().getY(), 4, 4);
             }
-
         }
     }
 
