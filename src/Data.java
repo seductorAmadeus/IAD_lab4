@@ -15,8 +15,8 @@ public class Data {
     private static Color colorOfPixel;
 
     static {
-        Point[] point = new Point[]{new Point(4, 4), new Point(3, 3), new Point(2, 2), new Point(1, 1), new Point(0, 0),
-                new Point(-1, -1), new Point(-2, -2), new Point(-3, -3), new Point(-4, -4)};
+        Point[] point = new Point[]{new Point(4, 4, Color.red), new Point(3, 3, Color.red), new Point(2, 2, Color.red), new Point(1, 1, Color.red), new Point(0, 0, Color.red),
+                new Point(-1, -1, Color.red), new Point(-2, -2, Color.red), new Point(-3, -3, Color.red), new Point(-4, -4, Color.red)};
         Collections.addAll(points, point);
     }
 
