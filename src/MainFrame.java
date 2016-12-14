@@ -61,7 +61,7 @@ public class MainFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        if (graphPanel.getStateCuror()) {
+        if (graphPanel.getStateCursor()) {
             // set color of pixel
             Data.setBufferedImage(getGraphPanelScreenshot(graphPanel));
             Data.setColorOfPixel(getColorOfPixel(Data.getBufferedImage().getRGB(mouseEvent.getX(), mouseEvent.getY())));

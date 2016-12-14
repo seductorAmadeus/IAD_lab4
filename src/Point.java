@@ -1,21 +1,9 @@
-import java.awt.*;
-
 public class Point implements Comparable {
     private float x, y;
-    private Color colorOfPoint;
 
-    Point(float x, float y, Color colorOfPoint) {
+    Point(float x, float y) {
         this.x = x;
         this.y = y;
-        this.colorOfPoint = colorOfPoint;
-    }
-
-    public void changeColorOfPoint(Point point) {
-        point.colorOfPoint = (point.colorOfPoint == Color.red) ? new Color(0x53F22C) : Color.red;
-    }
-
-    private Color getColorOfPoint(Point point) {
-        return point.colorOfPoint;
     }
 
     public float getX() {

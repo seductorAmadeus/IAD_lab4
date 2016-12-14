@@ -30,7 +30,7 @@ public class GraphPanel extends JPanel {
         mode = 1;
     }
 
-    public boolean getStateCuror() {
+    public boolean getStateCursor() {
         return stateCursor;
     }
 

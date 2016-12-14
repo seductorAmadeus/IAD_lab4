@@ -10,26 +10,13 @@ public class Data {
     private static JButton button;
     private static ArrayList<Point> points = new ArrayList<>();
     private static ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
-    private static ArrayList<Point> pointsOnGraph = new ArrayList<>();
     private static BufferedImage bufferedImage;
     private static Color colorOfPixel;
 
     static {
-        Point[] point = new Point[]{new Point(4, 4, Color.red), new Point(3, 3, Color.red), new Point(2, 2, Color.red), new Point(1, 1, Color.red), new Point(0, 0, Color.red),
-                new Point(-1, -1, Color.red), new Point(-2, -2, Color.red), new Point(-3, -3, Color.red), new Point(-4, -4, Color.red)};
+        Point[] point = new Point[]{new Point(4, 4), new Point(3, 3), new Point(2, 2), new Point(1, 1), new Point(0, 0),
+                new Point(-1, -1), new Point(-2, -2), new Point(-3, -3), new Point(-4, -4)};
         Collections.addAll(points, point);
-    }
-
-    public static ArrayList<Point> getPointsOnGraph() {
-        return pointsOnGraph;
-    }
-
-    public static void setPointsOnGraph(Point point) {
-        pointsOnGraph.add(point);
-    }
-
-    public static Color getColorOfPixel() {
-        return colorOfPixel;
     }
 
     public static void setColorOfPixel(Color pixelColor) {
