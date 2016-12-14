@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Point;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -107,9 +108,6 @@ public class GraphPanel extends JPanel {
                 Point2D realpoint = Coordinates(Noktas.lastElement());
                 if (rectangle.contains(realpoint) || polygon.contains(realpoint) || arc.contains(realpoint)) {
                     graphic.setColor(Color.green);
-                    // test actions
-
-                    //end of test actions
                 } else {
                     graphic.setColor(Color.RED);
                 }
@@ -122,6 +120,7 @@ public class GraphPanel extends JPanel {
                 graphic.fillRect((int) real.get().getX(), (int) real.get().getY(), 4, 4);
             }
         }
+        System.out.println("Число зеленых точек: " + getCountOfPointInArea());
     }
 
     private synchronized Point2D.Double Coordinates(Point2D point2D) {
@@ -129,6 +128,17 @@ public class GraphPanel extends JPanel {
         x = Width / 2 + point2D.getX() * stepX;
         y = Height / 2 - point2D.getY() * stepY;
         return new Point2D.Double(x, y);
+    }
+
+    private synchronized int getCountOfPointInArea() {
+        int count = 0;
+        for (Point2D nokta : Noktas) {
+            Point2D realpoint = Coordinates(nokta);
+            if (rectangle.contains(realpoint) || polygon.contains(realpoint) || arc.contains(realpoint)) {
+                count++;
+            }
+        }
+        return count;
     }
 
     private void AnimatedPaint() {
@@ -153,53 +163,61 @@ public class GraphPanel extends JPanel {
             }
         }
         Noktas.add(axis.get());
+
+        System.out.println(Noktas.size());
         axis.set(null);
+    }
+
+    /*проверять и искать количество точек из Noktas, принадлежащих графику. Если число таких точек изменяется, то перерисовывать (ставить флаг, затем снимать) */
+
+    private synchronized void drawGraph() {
+       /* savedPoint = new Point2D.Double(x, y);
+        Point2D.Double point = Coordinates(savedPoint);
+       */// if (rectangle.contains(point) || polygon.contains(point) || arc.contains(point)) {
+        Thread anim = new Thread(() -> {
+            Data.getSpinner().setEnabled(false);
+            Data.getButton().setEnabled(false);
+            try {
+                for (int i = 0, j = 0, k = 0;
+                     (i != 255) && (j != 245) && (k != 255);
+                     i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
+                    colorOfThePlotArea = new Color(i, j, k);
+                    System.out.println("@!$%!%!%!@%");
+                    repaint();
+                    Thread.sleep(30);
+                }
+                for (int i = 255; i >= 220; i--) {
+                    colorOfThePlotArea = new Color(i, 245, 255);
+                    repaint();
+                    Thread.sleep(100);
+                }
+                for (int i = 220, j = 255, k = 255;
+                     (i >= 0) || (j >= 0) || (k >= 0);
+                     i = (i - 1 >= 0) ? i - 1 : 0, j = (j - 1 >= 0) ? j - 1 : 0, k = (k - 1 >= 0) ? k - 1 : 0) {
+                    colorOfThePlotArea = new Color(i, j, k);
+                    repaint();
+                    Thread.sleep(30);
+                    if (i == 0 && k == 0 && j == 0) {
+                        break;
+                    }
+                }
+            } catch (Exception exp) {
+                exp.printStackTrace();
+            } finally {
+                Data.getSpinner().setEnabled(true);
+                Data.getButton().setEnabled(true);
+            }
+
+        });
+        anim.setDaemon(true);
+        anim.start();
     }
 
     private synchronized void addPointAxes(double x, double y) {
         savedPoint = new Point2D.Double(x, y);
         Point2D.Double point = Coordinates(savedPoint);
-        if (rectangle.contains(point) || polygon.contains(point) || arc.contains(point)) {
-            Thread anim = new Thread(() -> {
-                Data.getSpinner().setEnabled(false);
-                Data.getButton().setEnabled(false);
-                graphic.setColor(Color.orange);
-                try {
-                    for (int i = 0, j = 0, k = 0;
-                         (i != 255) && (j != 245) && (k != 255);
-                         i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
-                        colorOfThePlotArea = new Color(i, j, k);
-                        System.out.println("@!$%!%!%!@%");
-                        repaint();
-                        Thread.sleep(30);
-                    }
-                    for (int i = 255; i >= 220; i--) {
-                        colorOfThePlotArea = new Color(i, 245, 255);
-                        repaint();
-                        Thread.sleep(100);
-                    }
-                    for (int i = 220, j = 255, k = 255;
-                         (i >= 0) || (j >= 0) || (k >= 0);
-                         i = (i - 1 >= 0) ? i - 1 : 0, j = (j - 1 >= 0) ? j - 1 : 0, k = (k - 1 >= 0) ? k - 1 : 0) {
-                        colorOfThePlotArea = new Color(i, j, k);
-                        repaint();
-                        Thread.sleep(30);
-                        if (i == 0 && k == 0 && j == 0) {
-                            break;
-                        }
-                    }
-                } catch (Exception exp) {
-                    exp.printStackTrace();
-                } finally {
-                    Data.getSpinner().setEnabled(true);
-                    Data.getButton().setEnabled(true);
-                }
 
-            });
-            anim.setDaemon(true);
-            anim.start();
-        }
-        /*if (!rectangle.contains(point) && !polygon.contains(point) && !arc.contains(point)) {
+        if (!rectangle.contains(point) && !polygon.contains(point) && !arc.contains(point)) {
             Thread animation = new Thread(new Runnable() {
                 @Override
                 public void run() {
@@ -213,8 +231,7 @@ public class GraphPanel extends JPanel {
             });
             animation.setDaemon(true);
             animation.start();
-        } */
-        else {
+        } else {
             synchronized (this) {
                 Noktas.add(savedPoint);
                 mode = 2;
@@ -228,12 +245,21 @@ public class GraphPanel extends JPanel {
     }
 
     public void EventSpinner(JSpinner source) {
+        int countOfPointInArea = getCountOfPointInArea();
         synchronized (this) {
             this.R = (Integer) (source.getValue());
             this.stepX = this.Width / (coefficient * this.R);
             this.stepY = this.Height / (coefficient * this.R);
             mode = 1;
             repaint();
+        }
+        if (countOfPointInArea < getCountOfPointInArea()) {
+            Cursor temp = super.getCursor();
+            Cursor c1 = Toolkit.getDefaultToolkit().createCustomCursor((new ImageIcon(new byte[0])).getImage(), new Point(0, 0), "custom");
+            setCursor(c1);
+            super.setCursor(c1);
+            drawGraph();
+            super.setCursor(temp);
         }
     }
 }
