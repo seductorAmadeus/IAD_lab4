@@ -42,6 +42,10 @@ public class GraphPanel extends JPanel {
         return stepY;
     }
 
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
     @Override
     protected synchronized void paintComponent(Graphics graph) {
         Graphics2D graphic = (Graphics2D) graph;
@@ -207,10 +211,9 @@ public class GraphPanel extends JPanel {
         animation.start();
     }
 
-    private synchronized void addPointAxes(double x, double y) {
+    public synchronized void addPointAxes(double x, double y) {
         savedPoint = new Point2D.Double(x, y);
         Point2D.Double point = Coordinates(savedPoint);
-
         if (!rectangle.contains(point) && !polygon.contains(point) && !arc.contains(point)) {
             Thread animation = new Thread(new Runnable() {
                 @Override

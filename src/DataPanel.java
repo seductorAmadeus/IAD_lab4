@@ -145,6 +145,8 @@ public class DataPanel extends JPanel implements ItemListener, ChangeListener, A
 
     @Override
     public void mouseReleased(MouseEvent mouseEvent) {
+        graphPanel.addPointAxes(xPoint, yPoint);
+        graphPanel.setMode(1); // for rendering graph
         graphPanel.repaint();
         changeLabelX("x = " + xPoint);
         changeLabelY("y = " + yPoint);
