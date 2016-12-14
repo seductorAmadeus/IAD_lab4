@@ -61,15 +61,15 @@ public class MainFrame extends JFrame implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent mouseEvent) {
-        // set color of pixel
-        Data.setBufferedImage(getGraphPanelScreenshot(graphPanel));
-        Data.setColorOfPixel(getColorOfPixel(Data.getBufferedImage().getRGB(mouseEvent.getX(), mouseEvent.getY())));
-        // test action
-        System.out.print(Data.getColorOfPixel());
+        if (graphPanel.getStateCuror()) {
+            // set color of pixel
+            Data.setBufferedImage(getGraphPanelScreenshot(graphPanel));
+            Data.setColorOfPixel(getColorOfPixel(Data.getBufferedImage().getRGB(mouseEvent.getX(), mouseEvent.getY())));
 
-        graphPanel.addPointCoordinates(mouseEvent.getX(), mouseEvent.getY());
-        dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((mouseEvent.getX() - graphPanel.getWidth() / 2) / graphPanel.getStepX()));
-        dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(mouseEvent.getY() - graphPanel.getHeight() / 2) / graphPanel.getStepY()));
+            graphPanel.addPointCoordinates(mouseEvent.getX(), mouseEvent.getY());
+            dataPanel.changeLabelX("x = " + new DecimalFormat("##0.0").format((mouseEvent.getX() - graphPanel.getWidth() / 2) / graphPanel.getStepX()));
+            dataPanel.changeLabelY("y = " + new DecimalFormat("##0.0").format(-(mouseEvent.getY() - graphPanel.getHeight() / 2) / graphPanel.getStepY()));
+        }
     }
 
     @Override

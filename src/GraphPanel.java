@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Point;
 import java.awt.geom.Arc2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -10,7 +9,6 @@ public class GraphPanel extends JPanel {
     private final int coefficient = 3;
     private int Width, Height;
     private volatile double stepX, stepY;
-    private Graphics2D graphic;
     private volatile int R = 5, mode;
     private Rectangle2D rectangle;
     private Arc2D arc;
@@ -20,6 +18,7 @@ public class GraphPanel extends JPanel {
     private volatile Vector<Point2D> Noktas;
     private ThreadLocal<Point2D.Double> axis = null, real;
     private Color colorOfThePlotArea = Color.black;
+    private volatile boolean stateCursor = true;
 
     GraphPanel() {
         this.setPreferredSize(new Dimension(470, 260));
@@ -29,6 +28,10 @@ public class GraphPanel extends JPanel {
         alpha = new ThreadLocal<>();
         real = new ThreadLocal<>();
         mode = 1;
+    }
+
+    public boolean getStateCuror() {
+        return stateCursor;
     }
 
     public double getStepX() {
@@ -41,7 +44,7 @@ public class GraphPanel extends JPanel {
 
     @Override
     protected synchronized void paintComponent(Graphics graph) {
-        graphic = (Graphics2D) graph;
+        Graphics2D graphic = (Graphics2D) graph;
         super.paintComponent(graphic);
         if (axis.get() == null) {
             if (1 == mode) {
@@ -120,7 +123,6 @@ public class GraphPanel extends JPanel {
                 graphic.fillRect((int) real.get().getX(), (int) real.get().getY(), 4, 4);
             }
         }
-        System.out.println("Число зеленых точек: " + getCountOfPointInArea());
     }
 
     private synchronized Point2D.Double Coordinates(Point2D point2D) {
@@ -142,75 +144,67 @@ public class GraphPanel extends JPanel {
     }
 
     private void AnimatedPaint() {
-        int n = 255;
-        int step = (2000 / n) + 1;
         int x, y;
-        for (alpha.set(0); alpha.get() <= n; alpha.set(alpha.get() + 1)) {
-            try {
-                synchronized (this) {
-                    real.set(Coordinates(axis.get()));
-                    Point2D.Double test = real.get();
-                    if (rectangle.contains(test) || polygon.contains(test) || arc.contains(test)) {
-                        break;
-                    }
-                    x = (int) test.getX();
-                    y = (int) test.getY();
-                    this.paintImmediately(x, y, 4, 4);
-                }
-                Thread.sleep(step);
-            } catch (InterruptedException e) {
-                System.out.println("Not gonna happen");
-            }
+        real.set(Coordinates(axis.get()));
+        Point2D.Double test = real.get();
+        if (rectangle.contains(test) || polygon.contains(test) || arc.contains(test)) {
+            return;
         }
+        x = (int) test.getX();
+        y = (int) test.getY();
+        this.paintImmediately(x, y, 4, 4);
         Noktas.add(axis.get());
-
         System.out.println(Noktas.size());
         axis.set(null);
     }
 
-    /*проверять и искать количество точек из Noktas, принадлежащих графику. Если число таких точек изменяется, то перерисовывать (ставить флаг, затем снимать) */
-
     private synchronized void drawGraph() {
-       /* savedPoint = new Point2D.Double(x, y);
-        Point2D.Double point = Coordinates(savedPoint);
-       */// if (rectangle.contains(point) || polygon.contains(point) || arc.contains(point)) {
-        Thread anim = new Thread(() -> {
-            Data.getSpinner().setEnabled(false);
-            Data.getButton().setEnabled(false);
-            try {
-                for (int i = 0, j = 0, k = 0;
-                     (i != 255) && (j != 245) && (k != 255);
-                     i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
-                    colorOfThePlotArea = new Color(i, j, k);
-                    System.out.println("@!$%!%!%!@%");
-                    repaint();
-                    Thread.sleep(30);
-                }
-                for (int i = 255; i >= 220; i--) {
-                    colorOfThePlotArea = new Color(i, 245, 255);
-                    repaint();
-                    Thread.sleep(100);
-                }
-                for (int i = 220, j = 255, k = 255;
-                     (i >= 0) || (j >= 0) || (k >= 0);
-                     i = (i - 1 >= 0) ? i - 1 : 0, j = (j - 1 >= 0) ? j - 1 : 0, k = (k - 1 >= 0) ? k - 1 : 0) {
-                    colorOfThePlotArea = new Color(i, j, k);
-                    repaint();
-                    Thread.sleep(30);
-                    if (i == 0 && k == 0 && j == 0) {
-                        break;
+        Thread animation = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mode = 1;
+                axis.set((Point2D.Double) savedPoint.clone());
+                Data.getSpinner().setEnabled(false);
+                Data.getButton().setEnabled(false);
+                try {
+                    stateCursor = false;
+                    for (int i = 0, j = 0, k = 0;
+                         (i != 255) && (j != 245) && (k != 255);
+                         i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
+                        colorOfThePlotArea = new Color(i, j, k);
+                        repaint();
+                        Thread.sleep(30);
                     }
+                    for (int i = 255; i >= 220; i--) {
+                        colorOfThePlotArea = new Color(i, 245, 255);
+                        repaint();
+                        Thread.sleep(100);
+                    }
+                    for (int i = 220, j = 255, k = 255;
+                         (i >= 0) || (j >= 0) || (k >= 0);
+                         i = (i - 1 >= 0) ? i - 1 : 0, j = (j - 1 >= 0) ? j - 1 : 0, k = (k - 1 >= 0) ? k - 1 : 0) {
+                        colorOfThePlotArea = new Color(i, j, k);
+                        repaint();
+                        Thread.sleep(30);
+                        if (i == 0 && k == 0 && j == 0) {
+                            break;
+                        }
+                    }
+                } catch (Exception exp) {
+                    exp.printStackTrace();
+                } finally {
+                    Data.getSpinner().setEnabled(true);
+                    Data.getButton().setEnabled(true);
+                    stateCursor = true;
                 }
-            } catch (Exception exp) {
-                exp.printStackTrace();
-            } finally {
-                Data.getSpinner().setEnabled(true);
-                Data.getButton().setEnabled(true);
+                synchronized (this) {
+                    mode = 1;
+                    repaint();
+                }
             }
-
         });
-        anim.setDaemon(true);
-        anim.start();
+        animation.setDaemon(true);
+        animation.start();
     }
 
     private synchronized void addPointAxes(double x, double y) {
@@ -254,12 +248,7 @@ public class GraphPanel extends JPanel {
             repaint();
         }
         if (countOfPointInArea < getCountOfPointInArea()) {
-            Cursor temp = super.getCursor();
-            Cursor c1 = Toolkit.getDefaultToolkit().createCustomCursor((new ImageIcon(new byte[0])).getImage(), new Point(0, 0), "custom");
-            setCursor(c1);
-            super.setCursor(c1);
             drawGraph();
-            super.setCursor(temp);
         }
     }
 }
