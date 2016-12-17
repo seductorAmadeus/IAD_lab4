@@ -7,23 +7,23 @@ import java.util.Vector;
 
 public class GraphPanel extends JPanel {
     private final int coefficient = 3;
-    private int Width, Height;
+    private int graphWidth, graphHeight;
     private volatile double stepX, stepY;
-    private volatile int R = 5, mode;
+    private volatile int radius = 5, mode;
     private Rectangle2D rectangle;
     private Arc2D arc;
     private Polygon polygon;
     private Point2D.Double savedPoint;
     private ThreadLocal<Integer> alpha;
-    private volatile Vector<Point2D> Noktas;
+    private volatile Vector<Point2D> points;
     private ThreadLocal<Point2D.Double> axis = null, real;
     private Color colorOfThePlotArea = Color.black;
-    private volatile boolean stateCursor = true;
+    private volatile boolean stateCursor = true; // true ==  active cursor on the graph
 
     GraphPanel() {
         this.setPreferredSize(new Dimension(470, 260));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        Noktas = new Vector<>();
+        points = new Vector<>();
         axis = new ThreadLocal<>();
         alpha = new ThreadLocal<>();
         real = new ThreadLocal<>();
@@ -52,73 +52,72 @@ public class GraphPanel extends JPanel {
         super.paintComponent(graphic);
         if (axis.get() == null) {
             if (1 == mode) {
-                this.Width = this.getWidth();
-                this.Height = this.getHeight();
-                double radX = this.Width / coefficient, radY = this.Height / coefficient;
-                this.stepX = radX / this.R;
-                this.stepY = radY / this.R;
+                this.graphWidth = this.getWidth();
+                this.graphHeight = this.getHeight();
+                double radX = this.graphWidth / coefficient, radY = this.graphHeight / coefficient;
+                this.stepX = radX / this.radius;
+                this.stepY = radY / this.radius;
                 this.setBackground(new Color(0xFF, 248, 116));
+                graphic.setColor(colorOfThePlotArea); // set the color of shapes
 
-                /*  Заполнение фигур    */
-                graphic.setColor(colorOfThePlotArea);
+                /* drawing shapes */
                 rectangle = new Rectangle2D.Double(RectData.X, RectData.Y, RectData.WIDTH, RectData.HEIGHT);
                 graphic.fill(rectangle);
-                arc = new Arc2D.Double(radX / 2, radY / 2, 2 * radX, 2 * radY, 0, 90, Arc2D.PIE);
+                arc = new Arc2D.Double(ArcData.X, ArcData.Y, ArcData.WIDTH, ArcData.HEIGHT, ArcData.START_ANGLE, ArcData.EXTENT_ANGLE, Arc2D.PIE);
                 graphic.fill(arc);
-
                 polygon = new Polygon(PolygonData.X_POINTS, PolygonData.Y_POINTS, PolygonData.N_POINTS);
                 graphic.fill(polygon);
 
-                graphic.setColor(Color.red);
-                /*  Заполнение осей координат  */
-                graphic.drawLine(this.Width / 2, 0, this.Width / 2, this.Height);
-                graphic.drawLine(0, this.Height / 2, this.Width, this.Height / 2);
-                graphic.drawString("0", this.Width / 2 + 2, this.Height / 2 + 10);
-                graphic.drawString("X", this.Width - 10, this.Height / 2 - 15);
-                graphic.drawString("Y", this.Width / 2 + 10, 15);
-                /*  Отрисовка 'стрелочек'   */
-                graphic.drawLine(this.Width / 2, 0, this.Width / 2 + 7, 7);
-                graphic.drawLine(this.Width / 2, 0, this.Width / 2 - 7, 7);
-                graphic.drawLine(this.Width, this.Height / 2, this.Width - 7, this.Height / 2 - 7);
-                graphic.drawLine(this.Width, this.Height / 2, this.Width - 7, this.Height / 2 + 7);
+                graphic.setColor(Color.red); // set initial color for coordinate axis
 
-                /*  Нанесение координат */
-                graphic.drawLine(this.Width / 2 - 4, this.Height / 2 + (int) radY, this.Width / 2 + 4, this.Height / 2 + (int) radY);
-                graphic.drawString("-R", this.Width / 2 + 10, this.Height / 2 + (int) radY + 5);
-                graphic.drawLine(this.Width / 2 - 4, this.Height / 2 + (int) radY / 2, this.Width / 2 + 4, this.Height / 2 + (int) radY / 2);
-                graphic.drawString("-R/2", this.Width / 2 + 10, this.Height / 2 + (int) radY / 2 + 5);
-                graphic.drawLine(this.Width / 2 - 4, this.Height / 2 - (int) radY / 2, this.Width / 2 + 4, this.Height / 2 - (int) radY / 2);
-                graphic.drawString("R/2", this.Width / 2 + 10, this.Height / 2 - (int) radY / 2 + 5);
-                graphic.drawLine(this.Width / 2 - 4, this.Height / 2 - (int) radY, this.Width / 2 + 4, this.Height / 2 - (int) radY);
-                graphic.drawString("R", this.Width / 2 + 10, this.Height / 2 - (int) radY + 5);
+                /*  drawing coordinate axis */
+                graphic.drawLine(this.graphWidth / 2, 0, this.graphWidth / 2, this.graphHeight);
+                graphic.drawLine(0, this.graphHeight / 2, this.graphWidth, this.graphHeight / 2);
+                graphic.drawString("0", this.graphWidth / 2 + 2, this.graphHeight / 2 + 10);
+                graphic.drawString("X", this.graphWidth - 10, this.graphHeight / 2 - 15);
+                graphic.drawString("Y", this.graphWidth / 2 + 10, 15);
+                /*  drawing 'arrows'   */
+                graphic.drawLine(this.graphWidth / 2, 0, this.graphWidth / 2 + 7, 7);
+                graphic.drawLine(this.graphWidth / 2, 0, this.graphWidth / 2 - 7, 7);
+                graphic.drawLine(this.graphWidth, this.graphHeight / 2, this.graphWidth - 7, this.graphHeight / 2 - 7);
+                graphic.drawLine(this.graphWidth, this.graphHeight / 2, this.graphWidth - 7, this.graphHeight / 2 + 7);
+                /*  drawing coordinates */
+                graphic.drawLine(this.graphWidth / 2 - 4, this.graphHeight / 2 + (int) radY, this.graphWidth / 2 + 4, this.graphHeight / 2 + (int) radY);
+                graphic.drawString("-R", this.graphWidth / 2 + 10, this.graphHeight / 2 + (int) radY + 5);
+                graphic.drawLine(this.graphWidth / 2 - 4, this.graphHeight / 2 + (int) radY / 2, this.graphWidth / 2 + 4, this.graphHeight / 2 + (int) radY / 2);
+                graphic.drawString("-R/2", this.graphWidth / 2 + 10, this.graphHeight / 2 + (int) radY / 2 + 5);
+                graphic.drawLine(this.graphWidth / 2 - 4, this.graphHeight / 2 - (int) radY / 2, this.graphWidth / 2 + 4, this.graphHeight / 2 - (int) radY / 2);
+                graphic.drawString("R/2", this.graphWidth / 2 + 10, this.graphHeight / 2 - (int) radY / 2 + 5);
+                graphic.drawLine(this.graphWidth / 2 - 4, this.graphHeight / 2 - (int) radY, this.graphWidth / 2 + 4, this.graphHeight / 2 - (int) radY);
+                graphic.drawString("R", this.graphWidth / 2 + 10, this.graphHeight / 2 - (int) radY + 5);
 
-                graphic.drawLine(this.Width / 2 - (int) radX, this.Height / 2 - 4, this.Width / 2 - (int) radX, this.Height / 2 + 4);
-                graphic.drawString("-R", this.Width / 2 - (int) radX + 5, this.Height / 2 + 10);
-                graphic.drawLine(this.Width / 2 - (int) radX / 2, this.Height / 2 - 4, this.Width / 2 - (int) radX / 2, this.Height / 2 + 4);
-                graphic.drawString("-R/2", this.Width / 2 - (int) radX / 2 + 5, this.Height / 2 + 10);
-                graphic.drawLine(this.Width / 2 + (int) radX / 2, this.Height / 2 - 4, this.Width / 2 + (int) radX / 2, this.Height / 2 + 4);
-                graphic.drawString("R/2", this.Width / 2 + (int) radX / 2 + 5, this.Height / 2 + 10);
-                graphic.drawLine(this.Width / 2 + (int) radX, this.Height / 2 - 4, this.Width / 2 + (int) radX, this.Height / 2 + 4);
-                graphic.drawString("R", this.Width / 2 + (int) radX + 5, this.Height / 2 + 10);
+                graphic.drawLine(this.graphWidth / 2 - (int) radX, this.graphHeight / 2 - 4, this.graphWidth / 2 - (int) radX, this.graphHeight / 2 + 4);
+                graphic.drawString("-R", this.graphWidth / 2 - (int) radX + 5, this.graphHeight / 2 + 10);
+                graphic.drawLine(this.graphWidth / 2 - (int) radX / 2, this.graphHeight / 2 - 4, this.graphWidth / 2 - (int) radX / 2, this.graphHeight / 2 + 4);
+                graphic.drawString("-R/2", this.graphWidth / 2 - (int) radX / 2 + 5, this.graphHeight / 2 + 10);
+                graphic.drawLine(this.graphWidth / 2 + (int) radX / 2, this.graphHeight / 2 - 4, this.graphWidth / 2 + (int) radX / 2, this.graphHeight / 2 + 4);
+                graphic.drawString("R/2", this.graphWidth / 2 + (int) radX / 2 + 5, this.graphHeight / 2 + 10);
+                graphic.drawLine(this.graphWidth / 2 + (int) radX, this.graphHeight / 2 - 4, this.graphWidth / 2 + (int) radX, this.graphHeight / 2 + 4);
+                graphic.drawString("R", this.graphWidth / 2 + (int) radX + 5, this.graphHeight / 2 + 10);
 
-                for (Point2D nokta : Noktas) {
-                    Point2D realpoint = Coordinates(nokta);
-                    if (rectangle.contains(realpoint) || polygon.contains(realpoint) || arc.contains(realpoint)) {
+                for (Point2D nokta : points) {
+                    Point2D realPoint = getCoordinates(nokta);
+                    if (rectangle.contains(realPoint) || polygon.contains(realPoint) || arc.contains(realPoint)) {
                         graphic.setColor(Color.green);
                     } else {
                         graphic.setColor(Color.RED);
                     }
-                    int x = (int) realpoint.getX(), y = (int) realpoint.getY();
+                    int x = (int) realPoint.getX(), y = (int) realPoint.getY();
                     graphic.fillRect(x, y, 4, 4);
                 }
             } else {
-                Point2D realpoint = Coordinates(Noktas.lastElement());
-                if (rectangle.contains(realpoint) || polygon.contains(realpoint) || arc.contains(realpoint)) {
+                Point2D realPoint = getCoordinates(points.lastElement());
+                if (rectangle.contains(realPoint) || polygon.contains(realPoint) || arc.contains(realPoint)) {
                     graphic.setColor(Color.green);
                 } else {
                     graphic.setColor(Color.RED);
                 }
-                int x = (int) realpoint.getX(), y = (int) realpoint.getY();
+                int x = (int) realPoint.getX(), y = (int) realPoint.getY();
                 graphic.fillRect(x, y, 4, 4);
             }
         } else {
@@ -129,18 +128,18 @@ public class GraphPanel extends JPanel {
         }
     }
 
-    private synchronized Point2D.Double Coordinates(Point2D point2D) {
+    private synchronized Point2D.Double getCoordinates(Point2D point2D) {
         double x, y;
-        x = Width / 2 + point2D.getX() * stepX;
-        y = Height / 2 - point2D.getY() * stepY;
+        x = graphWidth / 2 + point2D.getX() * stepX;
+        y = graphHeight / 2 - point2D.getY() * stepY;
         return new Point2D.Double(x, y);
     }
 
-    private synchronized int getCountOfPointInArea() {
+    private synchronized int getCountOfPointsInArea() {
         int count = 0;
-        for (Point2D nokta : Noktas) {
-            Point2D realpoint = Coordinates(nokta);
-            if (rectangle.contains(realpoint) || polygon.contains(realpoint) || arc.contains(realpoint)) {
+        for (Point2D nokta : points) {
+            Point2D realPoint = getCoordinates(nokta);
+            if (rectangle.contains(realPoint) || polygon.contains(realPoint) || arc.contains(realPoint)) {
                 count++;
             }
         }
@@ -149,7 +148,7 @@ public class GraphPanel extends JPanel {
 
     private void AnimatedPaint() {
         int x, y;
-        real.set(Coordinates(axis.get()));
+        real.set(getCoordinates(axis.get()));
         Point2D.Double test = real.get();
         if (rectangle.contains(test) || polygon.contains(test) || arc.contains(test)) {
             return;
@@ -157,8 +156,8 @@ public class GraphPanel extends JPanel {
         x = (int) test.getX();
         y = (int) test.getY();
         this.paintImmediately(x, y, 4, 4);
-        Noktas.add(axis.get());
-        System.out.println(Noktas.size());
+        points.add(axis.get());
+        System.out.println(points.size());
         axis.set(null);
     }
 
@@ -213,24 +212,17 @@ public class GraphPanel extends JPanel {
 
     public synchronized void addPointAxes(double x, double y) {
         savedPoint = new Point2D.Double(x, y);
-        Point2D.Double point = Coordinates(savedPoint);
+        Point2D.Double point = getCoordinates(savedPoint);
         if (!rectangle.contains(point) && !polygon.contains(point) && !arc.contains(point)) {
-            Thread animation = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    axis.set((Point2D.Double) savedPoint.clone());
-                    AnimatedPaint();
-                    synchronized (this) {
-                        mode = 1;
-                        repaint();
-                    }
-                }
-            });
-            animation.setDaemon(true);
-            animation.start();
+            axis.set((Point2D.Double) savedPoint.clone());
+            AnimatedPaint();
+            synchronized (this) {
+                mode = 1;
+                repaint();
+            }
         } else {
             synchronized (this) {
-                Noktas.add(savedPoint);
+                points.add(savedPoint);
                 mode = 2;
                 repaint((int) point.getX(), (int) point.getY(), 4, 4);
             }
@@ -238,19 +230,19 @@ public class GraphPanel extends JPanel {
     }
 
     public synchronized void addPointCoordinates(double x, double y) {
-        addPointAxes((x - Width / 2) / stepX, -(y - Height / 2) / stepY);
+        addPointAxes((x - graphWidth / 2) / stepX, -(y - graphHeight / 2) / stepY);
     }
 
     public void EventSpinner(JSpinner source) {
-        int countOfPointInArea = getCountOfPointInArea();
+        int countOfPointInArea = getCountOfPointsInArea();
         synchronized (this) {
-            this.R = (Integer) (source.getValue());
-            this.stepX = this.Width / (coefficient * this.R);
-            this.stepY = this.Height / (coefficient * this.R);
+            this.radius = (Integer) (source.getValue());
+            this.stepX = this.graphWidth / (coefficient * this.radius);
+            this.stepY = this.graphHeight / (coefficient * this.radius);
             mode = 1;
             repaint();
         }
-        if (countOfPointInArea < getCountOfPointInArea()) {
+        if (countOfPointInArea < getCountOfPointsInArea()) {
             drawGraph();
         }
     }

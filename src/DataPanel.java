@@ -10,7 +10,7 @@ public class DataPanel extends JPanel implements ItemListener, ChangeListener, A
     private GraphPanel graphPanel;
     private double yPoint;
     private double xPoint;
-    private JSpinner valueR;
+    private JSpinner radiusSpinner;
 
     DataPanel(GraphPanel graphPanel) {
         this.graphPanel = graphPanel;
@@ -45,6 +45,7 @@ public class DataPanel extends JPanel implements ItemListener, ChangeListener, A
         comboBox = getComboBox();
         comboBox.addActionListener(actionListenerComboBox);
         comboBoxPanel.add(comboBox);
+
         this.add(labelChoiceX);
         this.add(comboBoxPanel);
         this.add(new JLabel("Choose the Y-coordinate of a point:"));
@@ -76,16 +77,16 @@ public class DataPanel extends JPanel implements ItemListener, ChangeListener, A
 
     private JPanel SpinnerInitialize() {
         JPanel SpinnerBox = new JPanel(new GridLayout(1, 2));
-        valueR = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
-        valueR.addChangeListener(this);
-        SpinnerBox.add(valueR);
-        Data.setSpinner(valueR);
+        radiusSpinner = new JSpinner(new SpinnerNumberModel(5, 1, 100, 1));
+        radiusSpinner.addChangeListener(this);
+        SpinnerBox.add(radiusSpinner);
+        Data.setSpinner(radiusSpinner);
         return SpinnerBox;
     }
 
     @Override
     public void stateChanged(ChangeEvent changeEvent) {
-        graphPanel.EventSpinner(valueR);
+        graphPanel.EventSpinner(radiusSpinner);
     }
 
     @Override
