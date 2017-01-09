@@ -176,19 +176,19 @@ public class GraphPanel extends JPanel {
                          i = (i + 1 <= 255) ? i + 1 : 255, j = (j + 1 <= 245) ? j + 1 : 245, k = (k + 1 <= 255) ? k + 1 : 255) {
                         colorOfThePlotArea = new Color(i, j, k);
                         repaint();
-                        Thread.sleep(30);
+                        Thread.sleep(10);
                     }
                     for (int i = 255; i >= 220; i--) {
                         colorOfThePlotArea = new Color(i, 245, 255);
                         repaint();
-                        Thread.sleep(100);
+                        Thread.sleep(30);
                     }
                     for (int i = 220, j = 255, k = 255;
                          (i >= 0) || (j >= 0) || (k >= 0);
                          i = (i - 1 >= 0) ? i - 1 : 0, j = (j - 1 >= 0) ? j - 1 : 0, k = (k - 1 >= 0) ? k - 1 : 0) {
                         colorOfThePlotArea = new Color(i, j, k);
                         repaint();
-                        Thread.sleep(30);
+                        Thread.sleep(10);
                         if (i == 0 && k == 0 && j == 0) {
                             break;
                         }
