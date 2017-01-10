@@ -1,3 +1,5 @@
+package iad4lab;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -88,4 +90,7 @@ public class MainFrame extends JFrame implements MouseListener {
     public void mousePressed(MouseEvent mouseEvent) {
     }
 
+    public GraphPanel getGraphPanel() {
+        return graphPanel;
+    }
 }

@@ -1,3 +1,5 @@
+package iad4lab;
+
 public class RectData {
     public static final int X = 80;
     public static final int Y = 235;

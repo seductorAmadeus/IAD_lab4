@@ -1,3 +1,5 @@
+package iad4lab;
+
 public class Point implements Comparable {
     private float x, y;
 

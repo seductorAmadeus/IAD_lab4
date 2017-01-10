@@ -1,3 +1,5 @@
+package iad4lab;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Arc2D;
@@ -28,6 +30,10 @@ public class GraphPanel extends JPanel {
         alpha = new ThreadLocal<>();
         real = new ThreadLocal<>();
         mode = 1;
+    }
+
+    public Vector<Point2D> getPoints() {
+        return points;
     }
 
     public boolean getStateCursor() {
@@ -128,7 +134,19 @@ public class GraphPanel extends JPanel {
         }
     }
 
-    private synchronized Point2D.Double getCoordinates(Point2D point2D) {
+    public Rectangle2D getRectangle() {
+        return rectangle;
+    }
+
+    public Polygon getPolygon() {
+        return polygon;
+    }
+
+    public Arc2D getArc() {
+        return arc;
+    }
+
+    public synchronized Point2D.Double getCoordinates(Point2D point2D) {
         double x, y;
         x = graphWidth / 2 + point2D.getX() * stepX;
         y = graphHeight / 2 - point2D.getY() * stepY;
@@ -213,6 +231,7 @@ public class GraphPanel extends JPanel {
     public synchronized void addPointAxes(double x, double y) {
         savedPoint = new Point2D.Double(x, y);
         Point2D.Double point = getCoordinates(savedPoint);
+        Data.getLab4().checkForOutOfAreaInARow(point);
         if (!rectangle.contains(point) && !polygon.contains(point) && !arc.contains(point)) {
             axis.set((Point2D.Double) savedPoint.clone());
             AnimatedPaint();

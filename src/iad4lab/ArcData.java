@@ -1,3 +1,5 @@
+package iad4lab;
+
 public class ArcData {
     public static final int X = 76;
     public static final int Y = 78;
