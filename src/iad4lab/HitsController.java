@@ -4,7 +4,7 @@ import javax.management.*;
 import java.awt.geom.Point2D;
 import java.util.Vector;
 
-public class Lab4 extends NotificationBroadcasterSupport implements Lab4MBean {
+public class HitsController extends NotificationBroadcasterSupport implements HitsControllerMBean {
 
     private GraphPanel graphPanel;
     private Vector<Point2D> points;
@@ -13,7 +13,7 @@ public class Lab4 extends NotificationBroadcasterSupport implements Lab4MBean {
     private int outsideClickCounter = 0;
     private int missedClickCounter = 0;
 
-    public Lab4(GraphPanel panel) {
+    public HitsController(GraphPanel panel) {
         graphPanel = panel;
         points = graphPanel.getPoints();
     }

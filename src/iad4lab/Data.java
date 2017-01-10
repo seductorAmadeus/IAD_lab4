@@ -14,21 +14,22 @@ public class Data {
     private static ArrayList<JCheckBox> checkBoxesList = new ArrayList<>();
     private static BufferedImage bufferedImage;
     private static Color colorOfPixel;
-    private static Lab4 lab4;
-
+    private static HitsController hitsController;
+    private static ShotsController shotsController;
     static {
         Point[] point = new Point[]{new Point(4, 4), new Point(3, 3), new Point(2, 2), new Point(1, 1), new Point(0, 0),
                 new Point(-1, -1), new Point(-2, -2), new Point(-3, -3), new Point(-4, -4)};
         Collections.addAll(points, point);
     }
 
-    public static Lab4 getLab4() {
-        return lab4;
+    public static HitsController getHitsController() {
+        return hitsController;
     }
 
-    public static void setLab4(Lab4 laboratory4) {
-        lab4 = laboratory4;
+    public static void setMbeanHits(HitsController controller) {
+        hitsController = controller;
     }
+
 
     public static void setColorOfPixel(Color pixelColor) {
         colorOfPixel = pixelColor;
@@ -76,5 +77,13 @@ public class Data {
 
     public static void setButton(JButton button) {
         Data.button = button;
+    }
+
+    public static ShotsController getShotsController() {
+        return shotsController;
+    }
+
+    public static void setShotsController(ShotsController shotsController) {
+        Data.shotsController = shotsController;
     }
 }

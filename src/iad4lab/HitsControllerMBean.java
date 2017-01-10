@@ -2,7 +2,7 @@ package iad4lab;
 
 import javax.management.NotificationEmitter;
 
-public interface Lab4MBean extends NotificationEmitter {
+public interface HitsControllerMBean extends NotificationEmitter {
 
     int getDotsInArea();
 

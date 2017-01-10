@@ -231,7 +231,7 @@ public class GraphPanel extends JPanel {
     public synchronized void addPointAxes(double x, double y) {
         savedPoint = new Point2D.Double(x, y);
         Point2D.Double point = getCoordinates(savedPoint);
-        Data.getLab4().checkForOutOfAreaInARow(point);
+        Data.getHitsController().checkForOutOfAreaInARow(point);
         if (!rectangle.contains(point) && !polygon.contains(point) && !arc.contains(point)) {
             axis.set((Point2D.Double) savedPoint.clone());
             AnimatedPaint();

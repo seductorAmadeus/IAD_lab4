@@ -9,10 +9,18 @@ public class Main {
         MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
         MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
-        ObjectName name = new ObjectName("iad4lab:type=Lab4");
-        Lab4 mbean = new Lab4(mainFrame.getGraphPanel());
-        mbs.registerMBean(mbean, name);
-        Data.setLab4(mbean);
+        ObjectName nameHits = new ObjectName("iad4lab:type=HitsController");
+        ObjectName nameShots = new ObjectName("iad4lab:type=ShotsController");
+
+        HitsController mbeanHits = new HitsController(mainFrame.getGraphPanel());
+        ShotsController mbeanShots = new ShotsController(mainFrame.getGraphPanel());
+
+        mbs.registerMBean(mbeanHits, nameHits);
+        mbs.registerMBean(mbeanShots, nameShots);
+
+        Data.setMbeanHits(mbeanHits);
+
+
         System.out.println("Waiting forever...");
         Thread.sleep(Long.MAX_VALUE);
     }
